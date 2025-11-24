@@ -17,51 +17,5 @@ public class WalletTransaction {
     private String purpose;
     private BigDecimal amount;
 
-    public String getId() {
-        return id;
-    }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public WalletTransactionType getType() {
-        return type;
-    }
-
-    public void setType(WalletTransactionType type) {
-        this.type = type;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getTransferId() {
-        return transferId;
-    }
-
-    public void setTransferId(String transferId) {
-        this.transferId = transferId;
-    }
-
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
 }

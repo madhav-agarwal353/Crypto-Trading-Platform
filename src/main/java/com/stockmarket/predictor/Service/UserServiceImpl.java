@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
         TwoFactorAuthentication twoFactorAuthentication = new TwoFactorAuthentication();
         twoFactorAuthentication.setEnabled(true);
         twoFactorAuthentication.setSendTo(verificationType);
-        user.settF(twoFactorAuthentication);
+        user.setTF(twoFactorAuthentication);
         return userRespository.save(user);
     }
 

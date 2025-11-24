@@ -55,7 +55,7 @@ public class WatchlistServiceImpl implements WatchListService {
         Watchlist optionalWatchlist =
                 watchListRepository.findByUserId(id);
         if (optionalWatchlist == null) {
-            throw new Exception("Watchlist not found for userId: " + user.getId());
+            throw new Exception("Watchlist not found for userId: ");
         } else {
            return optionalWatchlist;
         }
