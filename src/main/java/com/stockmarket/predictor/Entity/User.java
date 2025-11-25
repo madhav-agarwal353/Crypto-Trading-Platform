@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.stockmarket.predictor.domain.USER_ROLE;
 import com.stockmarket.predictor.Model.TwoFactorAuthentication;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Data
+
 @Document(collection = "users")
+@Data
 public class User {
 
     @Id

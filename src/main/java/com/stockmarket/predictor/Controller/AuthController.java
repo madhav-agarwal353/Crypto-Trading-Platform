@@ -67,7 +67,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwt = JwtProvider.generateToken(auth);
         User authuser = userRespository.findByEmail(email);
-        if (user.gettF().isEnabled()) {
+        if (user.getTF().isEnabled()) {
             AuthResponse res = new AuthResponse();
             res.setTwoFactorAuthEnabled(true);
             res.setStatus(true);
