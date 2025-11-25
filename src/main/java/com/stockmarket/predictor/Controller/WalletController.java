@@ -51,7 +51,7 @@ public class WalletController {
         return ResponseEntity.ok(wallet);
     }
 
-    @PutMapping("/wallet/${walletId}/transfer")
+    @PutMapping("/wallet/{walletId}/transfer")
     public ResponseEntity<?> walletToWalletTransfer(
             @RequestHeader("Authorization") String jwt
             , @PathVariable String walletId
@@ -73,7 +73,7 @@ public class WalletController {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @PutMapping("/wallet/order/{orderId}/pay")
+    @PutMapping("/wallet/order/{orderId}/add")
     public ResponseEntity<?> addMoneyToWallet(
             @RequestHeader("Authorization") String jwt,
             @RequestParam(name = "order_id") String orderId,

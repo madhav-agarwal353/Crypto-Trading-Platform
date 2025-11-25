@@ -34,7 +34,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Value("${razorpay.api.key}")
     private String razorpayKey;
 
-    @Value("${razorpay.ap.secretkey}")
+    @Value("${razorpay.api.secretkey}")
     private String razorpaysecretKey;
 
 

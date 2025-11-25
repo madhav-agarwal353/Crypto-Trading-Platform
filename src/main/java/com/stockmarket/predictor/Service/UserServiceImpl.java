@@ -6,7 +6,9 @@ import com.stockmarket.predictor.Model.TwoFactorAuthentication;
 import com.stockmarket.predictor.Respository.UserRespository;
 import com.stockmarket.predictor.domain.VerificationType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

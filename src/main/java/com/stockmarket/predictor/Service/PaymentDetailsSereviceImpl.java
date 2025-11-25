@@ -4,7 +4,9 @@ import com.stockmarket.predictor.Entity.User;
 import com.stockmarket.predictor.Model.PaymentDetails;
 import com.stockmarket.predictor.Respository.PaymentDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PaymentDetailsSereviceImpl implements PaymentDetailsService {
 
     @Autowired

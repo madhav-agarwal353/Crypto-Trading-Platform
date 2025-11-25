@@ -29,17 +29,17 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
 
     @Override
     public ForgotPasswordToken findByUserId(String userId) {
-        ForgotPasswordToken optionalToken = forgotPasswordRepository.findByUserById(userId);
+        ForgotPasswordToken optionalToken = forgotPasswordRepository.findByUserId(userId);
         return optionalToken;
     }
 
     @Override
     public void deleteToken(ForgotPasswordToken token) {
-          forgotPasswordRepository.delete(token);
+        forgotPasswordRepository.delete(token);
     }
 
     @Override
     public ForgotPasswordToken findByUser(String userId) {
-        return forgotPasswordRepository.findByUserById(userId);
+        return forgotPasswordRepository.findByUserId(userId);
     }
 }

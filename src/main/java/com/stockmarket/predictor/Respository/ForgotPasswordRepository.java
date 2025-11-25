@@ -4,5 +4,5 @@ import com.stockmarket.predictor.Model.ForgotPasswordToken;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ForgotPasswordRepository extends MongoRepository<ForgotPasswordToken, String> {
-    ForgotPasswordToken findByUserById(String userId);
+    ForgotPasswordToken findByUserId(String userId);
 }
