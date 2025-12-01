@@ -7,8 +7,8 @@ import com.stockmarket.predictor.Model.Order;
 import com.stockmarket.predictor.Model.OrderItem;
 import com.stockmarket.predictor.Respository.OrderItemRespository;
 import com.stockmarket.predictor.Respository.OrderRespository;
-import com.stockmarket.predictor.domain.OrderStatus;
-import com.stockmarket.predictor.domain.OrderType;
+import com.stockmarket.predictor.domain.ORDER_STATUS;
+import com.stockmarket.predictor.domain.ORDER_TYPE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private AssetService assetService;
 
     @Override
-    public Order createOrder(User user, OrderItem orderItem, OrderType orderType) {
+    public Order createOrder(User user, OrderItem orderItem, ORDER_TYPE ORDER_TYPE) {
         BigDecimal price = orderItem.getCoin().
                 getCurrentPrice().
                 multiply(
@@ -42,10 +42,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order();
         order.setUser(user);
         order.setOrderItem(orderItem);
-        order.setOrderType(orderType);
+        order.setORDER_TYPE(ORDER_TYPE);
         order.setPrice(price);
         order.setTimestamp(LocalDate.now());
-        order.setStatus(OrderStatus.PENDING);
+        order.setStatus(ORDER_STATUS.PENDING);
         return orderRespository.save(order);
     }
 
@@ -71,17 +71,16 @@ public class OrderServiceImpl implements OrderService {
         return orderItemRespository.save(orderItem);
     }
 
-    @Transactional
     private Order buyAsset(Coin coin,
                            BigDecimal quantity,
                            User user) throws Exception {
         double buyPrice = coin.getCurrentPrice().doubleValue();
         OrderItem orderItem = createOrderItem(coin, quantity, buyPrice, 0.0);
-        Order order = createOrder(user, orderItem, OrderType.BUY);
+        Order order = createOrder(user, orderItem, ORDER_TYPE.BUY);
         orderItem.setOrder(order);
         walletService.payOrder(order, user);
-        order.setStatus(OrderStatus.SUCCESS);
-        order.setOrderType(OrderType.BUY);
+        order.setStatus(ORDER_STATUS.SUCCESS);
+        order.setORDER_TYPE(ORDER_TYPE.BUY);
         Order savedOrder = orderRespository.save(order);
         Asset existingAsset = assetService.findAssetByUserAndCoin(user.getId(), coin.getId());
         if (existingAsset != null) {
@@ -92,7 +91,6 @@ public class OrderServiceImpl implements OrderService {
         return savedOrder;
     }
 
-    @Transactional
     private Order sellAsset(Coin coin,
                             BigDecimal quantity,
                             User user) throws Exception {
@@ -103,11 +101,11 @@ public class OrderServiceImpl implements OrderService {
         }
         double buyPrice = assetToSell.getBuyPrice();
         OrderItem orderItem = createOrderItem(coin, quantity, 0, sellPrice);
-        Order order = createOrder(user, orderItem, OrderType.SELL);
+        Order order = createOrder(user, orderItem, ORDER_TYPE.SELL);
         orderItem.setOrder(order);
         if (assetToSell.getQuantity() >= quantity.doubleValue()) {
-            order.setStatus(OrderStatus.SUCCESS);
-            order.setOrderType(OrderType.SELL);
+            order.setStatus(ORDER_STATUS.SUCCESS);
+            order.setORDER_TYPE(ORDER_TYPE.SELL);
             Order savedOrder = orderRespository.save(order);
             walletService.payOrder(order, user);
             Asset updatedAsset = assetService.updateAsset(assetToSell.getId(), quantity.multiply(BigDecimal.valueOf(-1)).doubleValue());
@@ -121,14 +119,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order processOrder(Coin coin, BigDecimal quantity, OrderType orderType, User user) {
-        if (orderType == OrderType.BUY) {
+    public Order processOrder(Coin coin, BigDecimal quantity, ORDER_TYPE orderType, User user) {
+        if (orderType == ORDER_TYPE.BUY) {
             try {
                 return buyAsset(coin, quantity, user);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-        } else if (orderType == OrderType.SELL) {
+        } else if (orderType == ORDER_TYPE.SELL) {
             try {
                 return sellAsset(coin, quantity, user);
             } catch (Exception e) {

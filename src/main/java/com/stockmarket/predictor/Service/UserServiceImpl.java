@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByJwtToken(String token) {
         String email = JwtProvider.getEmailFromToken(token);
+        System.out.println("mail"+email);
         User user = userRespository.findByEmail(email);
         return user;
     }
@@ -48,4 +49,5 @@ public class UserServiceImpl implements UserService {
         user.setPassword(newPassword);
         return userRespository.save(user);
     }
+
 }

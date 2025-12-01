@@ -73,7 +73,7 @@ public class WalletController {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @PutMapping("/wallet/order/{orderId}/add")
+    @PutMapping("/wallet/order/deposit")
     public ResponseEntity<?> addMoneyToWallet(
             @RequestHeader("Authorization") String jwt,
             @RequestParam(name = "order_id") String orderId,
@@ -86,8 +86,6 @@ public class WalletController {
         if (status) {
             walletService.addBalance(wallet, order.getAmount());
         }
-
-
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 }

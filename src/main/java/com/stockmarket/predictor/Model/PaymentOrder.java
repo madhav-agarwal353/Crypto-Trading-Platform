@@ -5,6 +5,7 @@ import com.stockmarket.predictor.domain.PaymentMethod;
 import com.stockmarket.predictor.domain.PaymentOrderStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 @Data
 public class PaymentOrder {
@@ -13,5 +14,6 @@ public class PaymentOrder {
     private Double amount;
     private PaymentOrderStatus status;
     private PaymentMethod paymentMethod;
+    @DBRef
     private User user;
 }

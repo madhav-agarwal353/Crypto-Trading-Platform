@@ -18,6 +18,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Type;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -60,7 +61,7 @@ public class CoinServiceImpl implements CoinService {
     @Override
     public String getMarketChart(String coinId, int days) {
         try {
-            String url = "https://api.coingecko.com/api/v3/coins/" + coinId + "market_chart?vs_currency=usd&days=" + days;
+            String url = "https://api.coingecko.com/api/v3/coins/" + coinId + "/market_chart?vs_currency=usd&days=" + days;
             RestTemplate restTemplate = new RestTemplate();
             HttpHeaders headers = new HttpHeaders();
             HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -114,13 +115,11 @@ public class CoinServiceImpl implements CoinService {
             coin.setMaxSupply(marketData.path("max_supply").decimalValue());
             coin.setAth(marketData.path("ath").path("usd").decimalValue());
             coin.setAthChangePercentage(marketData.path("ath_change_percentage").path("usd").decimalValue());
-            coin.setAthDate((marketData.path("ath_date").path("usd").asText()).toString());
+            coin.setAthDate(Instant.parse(marketData.path("ath_date").path("usd").asText())
+            );
             coin.setAtl(marketData.path("atl").path("usd").decimalValue());
             coin.setAtlChangePercentage(marketData.path("atl_change_percentage").path("usd").decimalValue());
-            String atlDateStr = marketData.path("atl_date").path("usd").asText();
-            LocalDate atlDate = LocalDate.parse(atlDateStr);
-            Date date = Date.from(atlDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            coin.setAtlDate(date);
+            coin.setAtlDate(Instant.parse(marketData.path("atl_date").path("usd").asText()));
             coin.setLastUpdated(marketData.path("last_updated").asText());
             coinRespository.save(coin);
             return response.getBody();

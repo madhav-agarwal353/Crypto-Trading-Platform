@@ -29,7 +29,7 @@ public class PaymentController {
         PaymentResponse paymentResponse;
         PaymentOrder order = paymentService.createOrder(user, amount, paymentMethod);
         if (paymentMethod.equals(PaymentMethod.RAZORPAY)) {
-            paymentResponse = paymentService.createRazorpayPayment(user, amount);
+            paymentResponse = paymentService.createRazorpayPayment(user, amount, order.getId());
         } else {
             paymentResponse = paymentService.createStripePayment(user, amount, order.getId());
         }

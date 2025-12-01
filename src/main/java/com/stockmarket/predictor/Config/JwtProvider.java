@@ -12,22 +12,25 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class JwtProvider {
     private static SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
 
     public static String generateToken(Authentication auth) {
-        Collection<? extends GrantedAuthority> AUTHORITIES = auth.getAuthorities();
-        String roles = populateAuthorities(AUTHORITIES);
-        String jwt = Jwts.builder()
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + 864000000))
-                .claim("email", auth.getName())
-                .claim("authorities", roles)
-                .signWith(key)
-                .compact();
-        return jwt;
-    }
+            String roles = auth.getAuthorities()
+                    .stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.joining(","));
+
+            return Jwts.builder()
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + 864000000)) // 10 days
+                    .claim("email", auth.getName())
+                    .claim("authorities", roles)
+                    .signWith(key)
+                    .compact();
+        }
 
     public static String getEmailFromToken(String token) {
         token = token.substring(7);
@@ -47,4 +50,5 @@ public class JwtProvider {
         }
         return String.join(",", auth);
     }
+
 }

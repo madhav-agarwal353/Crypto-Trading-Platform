@@ -1,5 +1,6 @@
 package com.stockmarket.predictor.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,110 +20,118 @@ import java.util.Date;
 @AllArgsConstructor
 @Document(collection = "cryptocurrencies")
 public class Coin {
-//    public class Cryptocurrency {
-//
-        @Id
-        @JsonProperty("id")
-        private String id;
 
-        @Field("symbol")
-        @JsonProperty("symbol")
-        private String symbol;
+    @Id
+    @JsonProperty("id")
+    private String id;
 
-        @Field("name")
-        @JsonProperty("name")
-        private String name;
+    @Field("symbol")
+    @JsonProperty("symbol")
+    private String symbol;
 
-        @Field("image")
-        @JsonProperty("image")
-        private String image;
+    @Field("name")
+    @JsonProperty("name")
+    private String name;
 
-        @Field("current_price")
-        @JsonProperty("current_price")
-        private BigDecimal currentPrice;
+    @Field("image")
+    @JsonProperty("image")
+    private String image;
 
-        @Field("market_cap")
-        @JsonProperty("market_cap")
-        private BigDecimal marketCap;
+    @Field("current_price")
+    @JsonProperty("current_price")
+    private BigDecimal currentPrice;
 
-        @Field("market_cap_rank")
-        @JsonProperty("market_cap_rank")
-        private Integer marketCapRank;
+    @Field("market_cap")
+    @JsonProperty("market_cap")
+    private BigDecimal marketCap;
 
-        @Field("fully_diluted_valuation")
-        @JsonProperty("fully_diluted_valuation")
-        private BigDecimal fullyDilutedValuation;
+    @Field("market_cap_rank")
+    @JsonProperty("market_cap_rank")
+    private Integer marketCapRank;
 
-        @Field("total_volume")
-        @JsonProperty("total_volume")
-        private BigDecimal totalVolume;
+    @Field("fully_diluted_valuation")
+    @JsonProperty("fully_diluted_valuation")
+    private BigDecimal fullyDilutedValuation;
 
-        @Field("high_24h")
-        @JsonProperty("high_24h")
-        private BigDecimal high24h;
+    @Field("total_volume")
+    @JsonProperty("total_volume")
+    private BigDecimal totalVolume;
 
-        @Field("low_24h")
-        @JsonProperty("low_24h")
-        private BigDecimal low24h;
+    @Field("high_24h")
+    @JsonProperty("high_24h")
+    private BigDecimal high24h;
 
-        @Field("price_change_24h")
-        @JsonProperty("price_change_24h")
-        private BigDecimal priceChange24h;
+    @Field("low_24h")
+    @JsonProperty("low_24h")
+    private BigDecimal low24h;
 
-        @Field("price_change_percentage_24h")
-        @JsonProperty("price_change_percentage_24h")
-        private BigDecimal priceChangePercentage24h;
+    @Field("price_change_24h")
+    @JsonProperty("price_change_24h")
+    private BigDecimal priceChange24h;
 
-        @Field("market_cap_change_24h")
-        @JsonProperty("market_cap_change_24h")
-        private BigDecimal marketCapChange24h;
+    @Field("price_change_percentage_24h")
+    @JsonProperty("price_change_percentage_24h")
+    private BigDecimal priceChangePercentage24h;
 
-        @Field("market_cap_change_percentage_24h")
-        @JsonProperty("market_cap_change_percentage_24h")
-        private BigDecimal marketCapChangePercentage24h;
+    @Field("market_cap_change_24h")
+    @JsonProperty("market_cap_change_24h")
+    private BigDecimal marketCapChange24h;
 
-        @Field("circulating_supply")
-        @JsonProperty("circulating_supply")
-        private BigDecimal circulatingSupply;
+    @Field("market_cap_change_percentage_24h")
+    @JsonProperty("market_cap_change_percentage_24h")
+    private BigDecimal marketCapChangePercentage24h;
 
-        @Field("total_supply")
-        @JsonProperty("total_supply")
-        private BigDecimal totalSupply;
+    @Field("circulating_supply")
+    @JsonProperty("circulating_supply")
+    private BigDecimal circulatingSupply;
 
-        @Field("max_supply")
-        @JsonProperty("max_supply")
-        private BigDecimal maxSupply;
+    @Field("total_supply")
+    @JsonProperty("total_supply")
+    private BigDecimal totalSupply;
 
-        @Field("ath")
-        @JsonProperty("ath")
-        private BigDecimal ath;
+    @Field("max_supply")
+    @JsonProperty("max_supply")
+    private BigDecimal maxSupply;
 
-        @Field("ath_change_percentage")
-        @JsonProperty("ath_change_percentage")
-        private BigDecimal athChangePercentage;
+    @Field("ath")
+    @JsonProperty("ath")
+    private BigDecimal ath;
 
-        @Field("ath_date")
-        @JsonProperty("ath_date")
-        private String athDate;
+    @Field("ath_change_percentage")
+    @JsonProperty("ath_change_percentage")
+    private BigDecimal athChangePercentage;
 
-        @Field("atl")
-        @JsonProperty("atl")
-        private BigDecimal atl;
+    @Field("ath_date")
+    @JsonProperty("ath_date")
+    private Instant athDate;
 
-        @Field("atl_change_percentage")
-        @JsonProperty("atl_change_percentage")
-        private BigDecimal atlChangePercentage;
+    @Field("atl")
+    @JsonProperty("atl")
+    private BigDecimal atl;
 
-        @Field("atl_date")
-        @JsonProperty("atl_date")
-        private Date atlDate;
+    @Field("atl_change_percentage")
+    @JsonProperty("atl_change_percentage")
+    private BigDecimal atlChangePercentage;
 
-        @Field("roi")
-        @JsonProperty("roi")
-        private String roi;
+    @Field("atl_date")
+    @JsonProperty("atl_date")
+    private Instant atlDate;
 
-        @Field("last_updated")
-        @JsonProperty("last_updated")
-        private String lastUpdated;
+    @Field("roi")
+    @JsonProperty("roi")
+    private Roi roi;
 
+    @Field("last_updated")
+    @JsonProperty("last_updated")
+    private String lastUpdated;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Roi {
+        private BigDecimal times;
+        private String currency;
+        private BigDecimal percentage;
+    }
 }

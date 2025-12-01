@@ -6,7 +6,7 @@ import com.stockmarket.predictor.Model.Order;
 import com.stockmarket.predictor.Service.CoinService;
 import com.stockmarket.predictor.Service.OrderService;
 import com.stockmarket.predictor.Service.UserService;
-import com.stockmarket.predictor.domain.OrderType;
+import com.stockmarket.predictor.domain.ORDER_TYPE;
 import com.stockmarket.predictor.request.CreateOrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -58,14 +58,14 @@ public class OrderController {
     @GetMapping()
     public ResponseEntity<?> getAllOrdersOfUser(
             @RequestHeader("Authorization") String token,
-            @RequestParam(required = false) OrderType orderType,
+            @RequestParam(required = false) ORDER_TYPE ORDER_TYPE,
             @RequestParam(required = false) String assetSymbol
     ) throws Exception {
         User user = userService.findUserByJwtToken(token);
         return ResponseEntity.ok(
                 orderService.getAllOrdersOfUser(
                         user.getId(),
-                        orderType.toString(),
+                        ORDER_TYPE.toString(),
                         assetSymbol
                 )
         );

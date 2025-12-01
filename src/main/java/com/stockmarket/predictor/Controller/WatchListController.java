@@ -42,7 +42,7 @@ public class WatchListController {
         return ResponseEntity.status(HttpStatus.CREATED).body(watchlist);
     }
 
-    @GetMapping("/{watchListId}")
+    @GetMapping("/id/{watchListId}")
     public ResponseEntity<?> getWatchListById(
             @PathVariable String WatchListId
     ) throws Exception {

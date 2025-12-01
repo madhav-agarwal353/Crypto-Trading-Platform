@@ -2,12 +2,12 @@ package com.stockmarket.predictor.Model;
 
 import com.mongodb.lang.NonNull;
 import com.stockmarket.predictor.Entity.User;
-import com.stockmarket.predictor.domain.OrderStatus;
-import com.stockmarket.predictor.domain.OrderType;
+import com.stockmarket.predictor.domain.ORDER_STATUS;
+import com.stockmarket.predictor.domain.ORDER_TYPE;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,13 +18,14 @@ public class Order {
 
     @Id
     private String Id;
+    @DBRef
     private User user;
     @NonNull
-    private OrderType orderType;
+    private ORDER_TYPE ORDER_TYPE;
     @NonNull
     private BigDecimal price;
     private LocalDate timestamp = LocalDate.now();
-    private OrderStatus status;
+    private ORDER_STATUS status;
+    @DBRef
     private OrderItem orderItem;
-
 }

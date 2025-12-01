@@ -4,7 +4,7 @@ import com.stockmarket.predictor.Entity.User;
 import com.stockmarket.predictor.Model.Order;
 import com.stockmarket.predictor.Model.Wallet;
 import com.stockmarket.predictor.Respository.WalletRespository;
-import com.stockmarket.predictor.domain.OrderType;
+import com.stockmarket.predictor.domain.ORDER_TYPE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,17 +63,16 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Wallet payOrder(Order order, User user) throws Exception {
         Wallet wallet = getUserWallet(user);
-        if (order.getOrderType().equals(OrderType.BUY)) {
+        if (order.getORDER_TYPE().equals(ORDER_TYPE.BUY)) {
             BigDecimal newBalance = wallet.getBalance();
             if (newBalance.compareTo(order.getPrice()) < 0) {
                 throw new Exception("Less balance");
             }
-            wallet.setBalance(wallet.getBalance().add(order.getPrice()));
-        } else if (order.getOrderType().equals(OrderType.SELL)) {
+            wallet.setBalance(wallet.getBalance().subtract(order.getPrice()));
+        } else if (order.getORDER_TYPE().equals(ORDER_TYPE.SELL)) {
             BigDecimal newBalance = wallet.getBalance().add(order.getPrice());
             wallet.setBalance(newBalance);
-            return walletRespository.save(wallet);
         }
-        return null;
+        return walletRespository.save(wallet);
     }
 }

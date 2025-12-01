@@ -22,6 +22,8 @@ public class User {
     @Indexed(unique = true)
     private String email;
 
+    private Long mobileNo;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 

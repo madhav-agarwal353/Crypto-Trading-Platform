@@ -92,7 +92,7 @@ public class AuthController {
 
     private Authentication authenticate(String email, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-        if (userDetails != null && userDetails.getPassword().equals(password)) {
+        if (userDetails == null || !userDetails.getPassword().equals(password)) {
             throw new BadCredentialsException("Invalid email or password");
         }
         return new UsernamePasswordAuthenticationToken(

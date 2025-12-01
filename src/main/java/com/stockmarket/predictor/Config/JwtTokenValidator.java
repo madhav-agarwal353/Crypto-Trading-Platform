@@ -12,42 +12,54 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.crypto.SecretKey;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JwtTokenValidator extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain filterChain) throws IOException, ServletException {
+                                    FilterChain filterChain)
+            throws IOException, ServletException {
+
         String authHeader = request.getHeader(JwtConstant.JWT_HEADER);
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            authHeader.replace("Bearer ", "");
+
+            // FIX: remove Bearer prefix
+            authHeader = authHeader.replace("Bearer ", "");
+
             try {
                 SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
+
                 Claims claim = Jwts.parserBuilder()
                         .setSigningKey(key)
                         .build()
                         .parseClaimsJws(authHeader)
                         .getBody();
-                String email = String.valueOf(claim.get("email"));
-                String role = String.valueOf(claim.get("authorities"));
-                List<GrantedAuthority> authorityList = AuthorityUtils.commaSeparatedStringToAuthorityList(role);
-                Authentication auth = new UsernamePasswordAuthenticationToken(
-                        email,
-                        null,
-                        authorityList
-                );
+
+                String email = claim.get("email", String.class);
+                String roles = claim.get("authorities", String.class);
+
+                List<GrantedAuthority> authorityList =
+                        AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
+
+                Authentication auth =
+                        new UsernamePasswordAuthenticationToken(email, null, authorityList);
+
                 SecurityContextHolder.getContext().setAuthentication(auth);
+
             } catch (Exception e) {
                 throw new RuntimeException("Invalid JWT Token");
             }
         }
+
         filterChain.doFilter(request, response);
     }
 }
