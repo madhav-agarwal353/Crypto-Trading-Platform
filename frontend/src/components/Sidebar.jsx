@@ -15,7 +15,7 @@ const menu = [
 
 const Sidebar = () => {
   return (
-    <div className="h-full w-full flex flex-col items-center py-0">
+    <div className=" w-full flex flex-col items-center py-0 h-96">
       {menu.map((item, index) => (
         <SheetClose key={index}>
           <button
@@ -24,18 +24,17 @@ const Sidebar = () => {
         px-5 py-4 my-3
         text-white
         rounded-2xl
-        bg-white/10            
-        backdrop-blur-lg        
-        border border-white/20  
+        bg-white/4           
+        backdrop-blur-lg         
         shadow-lg shadow-black/20
         hover:bg-white/20
         hover:border-white/30
+        hover:scale-101
         transition-all duration-300">
             <div className="flex items-center gap-3">
               <span className="text-xl">{item.icon}</span>
               <p className="text-base font-medium">{item.name}</p>
             </div>
-
             <ChevronRight className="opacity-70" />
           </button>
 

@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './index.css'
 import { Button } from './components/ui/button'
 import Navbar from '@/components/Navbar.jsx'
+import Home from '@/components/Home'
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="bg-background text-foreground h-screen">
-      <Navbar></Navbar>
+    <div className="bg-background text-foreground h-screen" >
+      <Navbar />
+      <Home />
     </div>
   )
 }
