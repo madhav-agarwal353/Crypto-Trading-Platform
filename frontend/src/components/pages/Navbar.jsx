@@ -22,7 +22,7 @@ const Navbar = () => {
         <div className='px-5 py-3 bg-gray-950 bg-opacity-1 z-10
         sticky top-0 left-0 right-0 flex justify-between items-center'>
             <div className='flex gap-30 items-center'>
-                <Sheet className=' bg-gray-900'>
+                <Sheet>
                     <SheetTrigger>
                         <div className="h-10 w-10 rounded-full bg-gray-900 hover:bg-gray-800 flex items-center justify-center transition">
                             <ChevronRight className="h-9 text-white" />

@@ -21,10 +21,10 @@ const Home = () => {
     return (
         <div className='relative'>
             <div className="lg:flex ">
-                <div className='lg:w-[50%] border-r px-3 h-[calc(100vh-64px)] overflow-y-scroll   scrollbar-dark
+                <div className='lg:w-[50%] border-r px-5 h-[calc(100vh-64px)] overflow-y-scroll scrollbar-dark
   scroll-smooth
 '>
-                    <div className='p-3 flex items-center gap-4'>
+                    <div className='p-7 flex items-center gap-4'>
                         <Button
                             onClick={() => handleCategory("all")} variant={category == 'all' ? "default" : "outline"}>All</Button>
                         <Button
@@ -36,7 +36,7 @@ const Home = () => {
                     </div>
                     <CoinsTable />
                 </div>
-                <div className='hidden lg:block lg:w-[50%] p-5 h-[calc(100vh-64px)]'>
+                <div className='hidden lg:block lg:w-[50%] p-7 h-[calc(100vh-64px)]'>
                     <Chart />
                     <div className='flex gap-2 h-10'>
                         <div>
