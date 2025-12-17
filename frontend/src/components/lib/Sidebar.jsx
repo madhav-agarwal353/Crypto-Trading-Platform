@@ -17,22 +17,46 @@ const menu = [
 const Sidebar = () => {
   const navigate = useNavigate();
   return (
-    <div className=" w-full flex flex-col items-center py-0 h-96">
+    <div className=" w-full flex flex-col items-center py-0 h-full overflow-y-scroll scrollbar-dark scroll-smooth">
       {menu.map((item, index) => (
         <SheetClose key={index}>
           <button
             onClick={() => navigate(item.path)}
-            className="group
-    flex items-center justify-between w-88
-    px-5 py-4 my-3
-    rounded-2xl
-    bg-white/5
-    backdrop-blur-lg
-    shadow-lg shadow-black/20
-    hover:bg-white/20
-    hover:border-white/30
-    hover:scale-[1.01]
-    transition-all duration-300">
+            className="
+  group
+  flex items-center justify-between
+  w-84
+  px-5 py-4 my-3
+  rounded-2xl
+
+  /* Ultra-subtle glass base */
+  bg-white/[0.04]
+  backdrop-blur-xl
+  border border-white/10
+
+  /* Left-to-right soft tint */
+  relative
+  before:absolute before:inset-0 before:rounded-2xl
+  before:bg-gradient-to-r
+  before:from-primary/15
+  before:via-transparent
+  before:to-transparent
+  before:opacity-40
+  before:pointer-events-none
+
+  /* Depth */
+  shadow-lg shadow-black/30
+
+  /* Interaction */
+  hover:bg-white/[0.07]
+  hover:border-white/20
+  hover:scale-[1.01]
+  active:scale-[0.98]
+
+  transition-all duration-300 ease-out
+"
+
+          >
             <div className="flex items-center gap-3">
               <span className="
       text-xl

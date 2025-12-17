@@ -19,9 +19,11 @@ const Home = () => {
 
 
     return (
-        <div className='h-full relative'>
+        <div className='relative'>
             <div className="lg:flex ">
-                <div className='lg:w-[50%] border-r'>
+                <div className='lg:w-[50%] border-r px-3 h-[calc(100vh-64px)] overflow-y-scroll   scrollbar-dark
+  scroll-smooth
+'>
                     <div className='p-3 flex items-center gap-4'>
                         <Button
                             onClick={() => handleCategory("all")} variant={category == 'all' ? "default" : "outline"}>All</Button>
@@ -34,7 +36,7 @@ const Home = () => {
                     </div>
                     <CoinsTable />
                 </div>
-                <div className='hidden lg:block lg:w-[50%] p-5'>
+                <div className='hidden lg:block lg:w-[50%] p-5 h-[calc(100vh-64px)]'>
                     <Chart />
                     <div className='flex gap-2 h-10'>
                         <div>
@@ -60,7 +62,6 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
             {/* <section className='absolute bottom-5 right-5 z-40 flex flex-col
              justify-end items-end gap-2'>

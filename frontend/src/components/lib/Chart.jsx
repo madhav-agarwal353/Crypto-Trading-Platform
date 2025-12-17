@@ -534,16 +534,120 @@ const Chart = () => {
             </div>
 
             <div id="chart-timeline sticky">
-                <ReactApexChart
-                    className='py-5'
-                    options={options}
-                    series={series}
-                    type='area'
-                    height={500}
-                />
+                <div className="h-[70vh] mb-5">
+                    <ReactApexChart
+                        options={options}
+                        series={series}
+                        type="area"
+                        height="100%"
+                    />
+                </div>
             </div>
         </div >
     )
 }
 
-export default Chart
+export default Chart;
+
+// export default Chart
+// import React, { useEffect, useRef } from "react";
+// import ReactApexChart from "react-apexcharts";
+// import ApexCharts from "apexcharts";
+
+// const TWO_HOURS = 2 * 60 * 60 * 1000;
+// const CHART_ID = "realtime-chart";
+
+// export default function Chart() {
+//   const socketRef = useRef(null);
+//   const dataRef = useRef([]);
+
+//   /* ================================
+//      LOAD HISTORY ONCE
+//      ================================ */
+//   useEffect(() => {
+//     async function loadHistory() {
+//       const end = Date.now();
+//       const start = end - TWO_HOURS;
+
+//       const res = await fetch(
+//         `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&startTime=${start}&endTime=${end}`
+//       );
+
+//       const klines = await res.json();
+
+//       dataRef.current = klines.map((k) => [
+//         k[0],
+//         parseFloat(k[4]),
+//       ]);
+
+//       ApexCharts.exec(CHART_ID, "updateSeries", [
+//         { data: dataRef.current },
+//       ]);
+//     }
+
+//     loadHistory();
+//   }, []);
+
+//   /* ================================
+//      REAL-TIME TICKS (APPEND ONLY)
+//      ================================ */
+//   useEffect(() => {
+//     socketRef.current = new WebSocket(
+//       "wss://stream.binance.com:9443/ws/btcusdt@trade"
+//     );
+
+//     socketRef.current.onmessage = (event) => {
+//       const trade = JSON.parse(event.data);
+//       const point = [trade.T, parseFloat(trade.p)];
+
+//       dataRef.current.push(point);
+
+//       // keep sliding window
+//       const cutoff = Date.now() - TWO_HOURS;
+//       dataRef.current = dataRef.current.filter((p) => p[0] >= cutoff);
+
+//       ApexCharts.exec(CHART_ID, "appendData", [
+//         { data: [point] },
+//       ]);
+//     };
+
+//     return () => socketRef.current?.close();
+//   }, []);
+
+//   /* ================================
+//      CHART OPTIONS
+//      ================================ */
+//   const options = {
+//     chart: {
+//       id: CHART_ID,
+//       type: "area",
+//       animations: { enabled: false },
+//       toolbar: { show: false },
+//       zoom: { enabled: false },
+//     },
+
+//     xaxis: {
+//       type: "datetime",
+//       range: TWO_HOURS,
+//       labels: { format: "HH:mm" },
+//     },
+
+//     stroke: {
+//       curve: "smooth",
+//       width: 2,
+//     },
+
+//     tooltip: {
+//       x: { format: "HH:mm:ss" },
+//     },
+//   };
+
+//   return (
+//     <ReactApexChart
+//       options={options}
+//       series={[{ data: [] }]} // initial empty
+//       type="area"
+//       height={500}
+//     />
+//   );
+// }
