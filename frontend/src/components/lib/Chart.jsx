@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactApexChart from "react-apexcharts";
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { useState } from 'react';
 const timeSeries = [
     {
@@ -519,7 +519,7 @@ const Chart = () => {
 
 
     return (
-        <div>
+        <div className='sticky'>
             <div className="flex items-center gap-2">
                 {timeSeries.map((item) => (
                     <Button
@@ -527,19 +527,19 @@ const Chart = () => {
                         variant={activeLabel == item.lable ? "default" : "outline"}
                         size="sm"
                         onClick={() => handleActiveLable(item.lable)}
-                        className="capitalize">
+                        className="capitalize p-4">
                         {item.lable}
                     </Button>
                 ))}
             </div>
 
-            <div id="chart-timeline">
+            <div id="chart-timeline sticky">
                 <ReactApexChart
                     className='py-5'
                     options={options}
                     series={series}
                     type='area'
-                    height={550}
+                    height={500}
                 />
             </div>
         </div >

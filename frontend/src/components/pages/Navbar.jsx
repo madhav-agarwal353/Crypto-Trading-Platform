@@ -8,14 +8,14 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons"
-import Sidebar from './Sidebar';
+import Sidebar from '@/components/lib/Sidebar';
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-import { Input } from './ui/input';
-import { Button } from './ui/button';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
 import MyImage from "@/assets/Logo.jpg"
 const Navbar = () => {
     return (

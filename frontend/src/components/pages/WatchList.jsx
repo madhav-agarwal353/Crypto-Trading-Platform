@@ -14,8 +14,17 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
-const CoinsTable = () => {
-    const invoices = [
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
+const WatchList = () => {
+        const invoices = [
         {
             invoice: "INV001",
             paymentStatus: "Paid",
@@ -114,37 +123,60 @@ const CoinsTable = () => {
         },
     ]
     return (
-        <Table className='w-full'>
-            <TableHeader>
-                <TableRow>
-                    <TableHead className="w-[100px]">Coin</TableHead>
-                    <TableHead>SYMBOL</TableHead>
-                    <TableHead>VOLUME</TableHead>
-                    <TableHead>MARKET CAP</TableHead>
-                    <TableHead>24H</TableHead>
-                    <TableHead className="text-right">Price</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {invoices.map((invoice) => (
-                    <TableRow key={invoice.invoice} className='h-10'>
-                        <TableCell className="font-medium flex items-center gap-2">
-                            <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <span>Coin bro</span>
-                        </TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell className="text-right">end</TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+        <Card className='mx-10 my-10 px-10 '>
+            <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                    <CardTitle>Portfolio</CardTitle>
+                    <CardDescription className='pt-2'>
+                        Your cryptocurrency holdings
+                    </CardDescription>
+                </div>
+
+                <CardAction>
+                    {/* <Button size="sm" variant="outline">View All</Button> */}
+                </CardAction>
+            </CardHeader>
+
+            <CardContent className="p-0">
+                <Table className="w-full">
+                    <TableHeader>
+                        <TableRow className="text-xl">
+                            <TableHead>Assets</TableHead>
+                            <TableHead>Price</TableHead>
+                            <TableHead>Unit</TableHead>
+                            <TableHead>Change</TableHead>
+                            <TableHead>Change(%)</TableHead>
+                            <TableHead className="text-right">Value</TableHead>
+                        </TableRow>
+                    </TableHeader>
+
+                    <TableBody>
+                        {invoices.map((invoice) => (
+                            <TableRow key={invoice.invoice} className="h-20">
+                                <TableCell className="h-20 font-medium flex items-center gap-3">
+                                    <Avatar>
+                                        <AvatarImage src="https://github.com/shadcn.png" />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+                                    <span>Bitcoin</span>
+                                </TableCell>
+
+                                <TableCell>hi</TableCell>
+                                <TableCell>hi</TableCell>
+                                <TableCell>hi</TableCell>
+                                <TableCell>hi</TableCell>
+                                <TableCell className="text-right">end</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </CardContent>
+
+            <CardFooter className="justify-end text-sm text-muted-foreground">
+                Showing {invoices.length} assets
+            </CardFooter>
+        </Card>
     )
 }
 
-export default CoinsTable
+export default WatchList
