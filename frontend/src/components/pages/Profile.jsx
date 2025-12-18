@@ -12,7 +12,10 @@ const Profile = () => {
       <div className="max-w-5xl mx-auto space-y-6">
 
         {/* Profile Card */}
-        <Card className="rounded-2xl border border-blue-500/10 bg-gradient-to-br from-blue-900/30 via-black/50 to-black/70 backdrop-blur-xl shadow-xl shadow-black/40">
+        <Card className="rounded-2xl border border-blue-600/20
+bg-gradient-to-r from-blue-950/60 via-slate-900/70 to-neutral-950/85
+backdrop-blur-xl shadow-xl shadow-black/60
+">
           <CardContent className="p-6">
             <div className="flex items-center gap-6">
               <Avatar className="w-24 h-24 ring-2 ring-blue-500/50">
@@ -40,7 +43,10 @@ const Profile = () => {
         </Card>
 
         {/* Security Settings */}
-        <Card className="rounded-2xl border border-blue-500/10 bg-gradient-to-br from-blue-900/30 via-black/50 to-black/70 backdrop-blur-xl shadow-xl shadow-black/40">
+        <Card className=" rounded-2xl border border-blue-600/20
+bg-gradient-to-r from-blue-950/60 via-slate-900/70 to-neutral-950/85
+backdrop-blur-xl shadow-xl shadow-black/60
+">
           <CardContent className="p-6 space-y-4">
             <h3 className="text-lg font-semibold text-gray-100">Security Settings</h3>
 
@@ -70,7 +76,10 @@ const Profile = () => {
         </Card>
 
         {/* Account Settings */}
-        <Card className="rounded-2xl border border-blue-500/10 bg-gradient-to-br from-blue-900/30 via-black/50 to-black/70 backdrop-blur-xl shadow-xl shadow-black/40">
+        <Card className="rounded-2xl border border-blue-600/20
+bg-gradient-to-r from-blue-950/60 via-slate-900/70 to-neutral-950/85
+backdrop-blur-xl shadow-xl shadow-black/60
+">
           <CardContent className="p-6 space-y-4">
             <h3 className="text-lg font-semibold text-gray-100">Account</h3>
 
@@ -92,7 +101,7 @@ const Profile = () => {
         </Card>
 
       </div>
-    </div>
+    </div >
   );
 };
 
