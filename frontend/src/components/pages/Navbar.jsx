@@ -20,7 +20,7 @@ import MyImage from "@/assets/Logo.jpg"
 const Navbar = () => {
     return (
         <div className='px-5 py-3 bg-gray-950 bg-opacity-1 z-10
-        sticky top-0 left-0 right-0 flex justify-between items-center'>
+        sticky top-0 left-0 right-0 flex justify-between items-center h-17'>
             <div className='flex gap-30 items-center'>
                 <Sheet>
                     <SheetTrigger>

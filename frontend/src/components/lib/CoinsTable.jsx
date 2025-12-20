@@ -14,7 +14,9 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
+import { useNavigate } from 'react-router-dom';
 const CoinsTable = () => {
+    const navigate = useNavigate();
     const invoices = [
         {
             invoice: "INV001",
@@ -59,60 +61,61 @@ const CoinsTable = () => {
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV008",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV009",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV010",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV011",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV012",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV013",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV014",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV015",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
         {
-            invoice: "INV007",
+            invoice: "INV016",
             paymentStatus: "Unpaid",
             totalAmount: "$300.00",
             paymentMethod: "Credit Card",
         },
-    ]
+    ];
+
     return (
         <Table className='w-full'>
             <TableHeader>
@@ -127,7 +130,7 @@ const CoinsTable = () => {
             </TableHeader>
             <TableBody>
                 {invoices.map((invoice) => (
-                    <TableRow key={invoice.invoice} className='h-20'>
+                    <TableRow key={invoice.invoice} className='h-20' onClick={() => navigate("/stock-details")}>
                         <TableCell className="h-20 font-medium flex items-center justify-center gap-2">
                             <Avatar>
                                 <AvatarImage src="https://github.com/shadcn.png" />
