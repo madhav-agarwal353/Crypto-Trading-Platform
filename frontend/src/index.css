@@ -111,10 +111,6 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
-.scroll-smooth {
-  scroll-behavior: smooth;
-}
-
 .scrollbar-dark::-webkit-scrollbar {
   width: 8px;
 }
@@ -132,6 +128,11 @@
   scrollbar-width: thin;
   scrollbar-color: #000 transparent;
 }
+
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
 
 @layer base {
   * {

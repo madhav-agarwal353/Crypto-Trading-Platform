@@ -16,7 +16,8 @@ import {
 } from "@/components/ui/avatar"
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import MyImage from "@/assets/Logo.jpg"
+// tailwind.config.js
+
 const Navbar = () => {
     return (
         <div className='px-5 py-3 bg-gray-950 bg-opacity-1 z-10
@@ -32,13 +33,18 @@ const Navbar = () => {
                         className="w-96 flex flex-col h-full"
                         side="left">
                         <SheetHeader className='pt-6 pb-0'>
-                            <SheetTitle className="flex items-center gap-6">
+                            <SheetTitle className="flex items-center gap-2">
                                 <Avatar className="h-14 w-14">
-                                    <AvatarImage src={MyImage} className='scale-190 translate-y-2' />
+                                    <AvatarImage
+                                        src="/favicon.ico"
+                                        className="scale-78"
+                                    />
+
                                 </Avatar>
-                                <span className="font-semibold text-2xl tracking-wide">
+                                <h1 className="text-white text-3xl md:text-4xl font-normal tracking-tight font-brand transition-opacity duration-300 hover:opacity-80">
                                     FINORA
-                                </span>
+                                </h1>
+
                             </SheetTitle>
                         </SheetHeader>
                         <Sidebar />

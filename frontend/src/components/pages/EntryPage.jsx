@@ -22,13 +22,15 @@ export default function FinoraAuth(props) {
   const navigate = useNavigate();
   const mode = props.name;
   return (
-    <div className="min-h-screen flex bg-black text-white">
+    <div className="h-screen overflow-hidden flex bg-black text-white">
       {/* LEFT AUTH PANEL */}
       <div className="flex-1 flex items-center justify-center">
         <Card className="w-full max-w-md bg-black border-0 shadow-none">
           <CardContent className="space-y-6">
             {/* Logo */}
-            <div className="flex justify-center text-3xl font-bold">⚡</div>
+            <div className="flex justify-center text-3xl font-bold">
+              <img src="/favicon.ico" alt="" className="h-10"/>
+            </div>
 
             {/* Heading */}
             <div className="text-center">

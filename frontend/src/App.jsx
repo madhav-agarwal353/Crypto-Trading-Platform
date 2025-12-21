@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import viteLogo from '/vite.svg'
 import './index.css'
 import { Button } from './components/ui/button'
 import Navbar from '@/components/pages/Navbar.jsx'
@@ -20,10 +19,10 @@ import Signup from './components/lib/Signup'
 import ForgotPassword from './components/lib/ForgotPassword'
 function App() {
   // Replace this with your actual auth logic (e.g., from a context or Redux)
-  const isAuthenticated = false;
+  const isAuthenticated = true
 
   return (
-    <div className="bg-background text-foreground min-h-screen">
+    <div className="bg-background text-foreground overflow-y-scroll scroll-smooth scrollbar-dark">
       {isAuthenticated && <Navbar />}
 
       <Routes>
@@ -39,6 +38,7 @@ function App() {
             <Route path="/withdrawal" element={<Wallet />} />
             <Route path="/payment-details" element={<PaymentDetails />} />
             <Route path="/market/:id" element={<StockDetails />} />
+            <Route path="/stock-details" element={<StockDetails />} />
             <Route path="/watchlist" element={<WatchList />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/search" element={<Search />} />
