@@ -1,10 +1,68 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
-import { FcGoogle } from "react-icons/fc";
-import { useNavigate } from 'react-router-dom';
-export default function FinoraAuth(props) {
+import { useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent } from "@/components/ui/card"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
+
+import { FcGoogle } from "react-icons/fc"
+import { useNavigate } from "react-router-dom"
+
+import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from "react-redux"
+import { register, login } from "@/components/store/Auth/Action"
+
+export default function FinoraAuth({ name }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const mode = name
+
+  const { loading, error, user } = useSelector((state) => state.auth)
+
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      identifier: "",
+      otp: "",
+    },
+  })
+
+  const onSubmit = (values) => {
+    console.log("Auth submit:", mode, values)
+
+    if (mode === "signup") {
+      dispatch(register(values))
+    }
+
+    if (mode === "login") {
+      dispatch(login(values))
+    }
+
+    if (mode === "forgot") {
+      // dispatch(verifyOtp(values))
+    }
+  }
+
+  useEffect(() => {
+    if (user && mode === "login") {
+      navigate("/login")
+    }
+
+    if (user && mode === "signup") {
+      navigate("/signup")
+    }
+    if (user && mode === "forgot") {
+      navigate("/forgot-password")
+    }
+  }, [user, mode, navigate])
+
   const videoUrls = [
     "https://cdn.pixabay.com/video/2022/03/31/112471-694704574_large.mp4",
     "https://cdn.pixabay.com/video/2024/07/15/221356_large.mp4",
@@ -13,26 +71,21 @@ export default function FinoraAuth(props) {
     "https://cdn.pixabay.com/video/2023/01/08/145744-787427556_large.mp4",
     "https://cdn.pixabay.com/video/2017/12/18/13460-248644879_large.mp4",
     "https://cdn.pixabay.com/video/2022/10/11/134428-759734802_large.mp4",
-    "https://cdn.pixabay.com/video/2020/03/05/33269-396529577_large.mp4"
-  ];
-  const stockVideos = [
-    "kGZh6X8HBw8", "1OF53QNbMrE", "qiNna3KiS-o", "HybyM8lY35E",
-    "3aqZf6Vp9l0", "lGlpRe2WD6g", "b5BsywkETfU", "8xuvOFwSJJQ"
-  ];
-  const navigate = useNavigate();
-  const mode = props.name;
+    "https://cdn.pixabay.com/video/2020/03/05/33269-396529577_large.mp4",
+  ]
+
   return (
     <div className="h-screen overflow-hidden flex bg-black text-white">
-      {/* LEFT AUTH PANEL */}
+      {/* LEFT AUTH */}
       <div className="flex-1 flex items-center justify-center">
         <Card className="w-full max-w-md bg-black border-0 shadow-none">
           <CardContent className="space-y-6">
-            {/* Logo */}
-            <div className="flex justify-center text-3xl font-bold">
-              <img src="/favicon.ico" alt="" className="h-10"/>
+            {/* LOGO */}
+            <div className="flex justify-center">
+              <img src="/favicon.ico" className="h-10" alt="Finora" />
             </div>
 
-            {/* Heading */}
+            {/* HEADING */}
             <div className="text-center">
               <h1 className="text-2xl font-semibold">Welcome to Finora</h1>
               <p className="text-neutral-400 mt-1">
@@ -44,110 +97,228 @@ export default function FinoraAuth(props) {
 
             {/* GOOGLE AUTH */}
             {mode !== "forgot" && (
-              <Button className="w-full bg-white text-black hover:bg-neutral-200">
-                <FcGoogle className="mr-2 text-xl" /> Continue with Google
-              </Button>
-            )}
-
-            {mode !== "forgot" && (
-              <div className="flex items-center gap-3 text-neutral-500 text-sm">
-                <div className="flex-1 h-px bg-neutral-800" />OR
-                <div className="flex-1 h-px bg-neutral-800" />
-              </div>
-            )}
-
-            {/* LOGIN */}
-            {mode === "login" && (
-              <div className="space-y-4">
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  className="bg-neutral-900 border-neutral-800"
-                />
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  className="bg-neutral-900 border-neutral-800"
-                />
-
-                <Button className="w-full bg-neutral-800 hover:bg-neutral-700">
-                  Login
+              <>
+                <Button className="w-full bg-white text-black hover:bg-neutral-200">
+                  <FcGoogle className="mr-2 text-xl" />
+                  Continue with Google
                 </Button>
 
-                <div className="flex justify-between text-sm text-neutral-400">
-                  <button onClick={() => navigate("/forgot")}>
-                    Forgot password?
-                  </button>
-                  <button onClick={() => navigate("/signup")}>
-                    Create account
-                  </button>
+                <div className="flex items-center gap-3 text-neutral-500 text-sm">
+                  <div className="flex-1 h-px bg-neutral-800" />
+                  OR
+                  <div className="flex-1 h-px bg-neutral-800" />
                 </div>
-              </div>
+              </>
             )}
 
-            {/* SIGNUP */}
-            {mode === "signup" && (
-              <div className="space-y-4">
-                <Input
-                  placeholder="Full Name"
-                  className="bg-neutral-900 border-neutral-800"
-                />
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  className="bg-neutral-900 border-neutral-800"
-                />
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  className="bg-neutral-900 border-neutral-800"
-                />
-
-                <Button className="w-full bg-neutral-800 hover:bg-neutral-700">
-                  Sign Up
-                </Button>
-
-                <p className="text-sm text-center text-neutral-400">
-                  Already have an account?{" "}
-                  <button
-                    onClick={() => navigate("/login")}
-                    className="underline"
-                  >
-                    Login
-                  </button>
-                </p>
-              </div>
+            {/* ERROR */}
+            {error && (
+              <p className="text-sm text-red-500 text-center">{error}</p>
             )}
 
-            {/* FORGOT PASSWORD / OTP */}
-            {mode === "forgot" && (
-              <div className="space-y-4">
-                <Input
-                  placeholder="Email or Mobile Number"
-                  className="bg-neutral-900 border-neutral-800"
-                />
-                <Input
-                  placeholder="Enter OTP"
-                  className="bg-neutral-900 border-neutral-800"
-                />
+            {/* FORM */}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
+                {/* LOGIN */}
+                {mode === "login" && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      rules={{ required: "Email is required" }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              placeholder="Email"
+                              className="bg-neutral-900 border-neutral-800"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <Button className="w-full bg-neutral-800 hover:bg-neutral-700">
-                  Verify OTP
-                </Button>
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      rules={{ required: "Password is required" }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Password"
+                              className="bg-neutral-900 border-neutral-800"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                <p className="text-sm text-center text-neutral-400">
-                  Back to{" "}
-                  <button
-                    onClick={() => navigate("/login")}
-                    className="underline"
-                  >
-                    Login
-                  </button>
-                </p>
-              </div>
-            )}
+                    <Button
+                      disabled={loading}
+                      className="w-full bg-neutral-800 hover:bg-neutral-700"
+                    >
+                      {loading ? "Logging in..." : "Login"}
+                    </Button>
 
-            {/* FOOTER */}
+                    <div className="flex justify-between text-sm text-neutral-400">
+                      <button type="button" onClick={() => navigate("/forgot-password")}>
+                        Forgot password?
+                      </button>
+                      <button type="button" onClick={() => navigate("/signup")}>
+                        Create account
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {/* SIGNUP */}
+                {mode === "signup" && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      rules={{ required: "Name is required" }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              placeholder="Full Name"
+                              className="bg-neutral-900 border-neutral-800"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      rules={{ required: "Email is required" }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              placeholder="Email"
+                              className="bg-neutral-900 border-neutral-800"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      rules={{ required: "Password is required" }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="Password"
+                              className="bg-neutral-900 border-neutral-800"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button
+                      disabled={loading}
+                      className="w-full bg-neutral-800 hover:bg-neutral-700"
+                    >
+                      {loading ? "Signing up..." : "Sign Up"}
+                    </Button>
+
+                    <p className="text-sm text-center text-neutral-400">
+                      Already have an account?{" "}
+                      <button
+                        type="button"
+                        onClick={() => navigate("/login")}
+                        className="underline"
+                      >
+                        Login
+                      </button>
+                    </p>
+                  </>
+                )}
+
+                {/* FORGOT */}
+                {mode === "forgot" && (
+                  <>
+                    <FormField
+                      control={form.control}
+                      name="identifier"
+                      rules={{ required: "Required" }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              placeholder="Email or Mobile Number"
+                              className="bg-neutral-900 border-neutral-800"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="otp"
+                      rules={{ required: "OTP required" }}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter OTP"
+                              className="bg-neutral-900 border-neutral-800"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <Button
+                      disabled={loading}
+                      className="w-full bg-neutral-800 hover:bg-neutral-700"
+                    >
+                      {loading ? "Verifying..." : "Verify OTP"}
+                    </Button>
+
+                    <p className="text-sm text-center text-neutral-400">
+                      Back to{" "}
+                      <button
+                        type="button"
+                        onClick={() => navigate("/login")}
+                        className="underline"
+                      >
+                        Login
+                      </button>
+                    </p>
+                  </>
+                )}
+              </form>
+            </Form>
+
             <p className="text-xs text-neutral-500 text-center">
               By continuing, you agree to Finora’s Terms & Privacy Policy
             </p>
@@ -155,7 +326,7 @@ export default function FinoraAuth(props) {
         </Card>
       </div>
 
-      {/* RIGHT INSPIRATION GRID (like Framer) */}
+      {/* RIGHT VIDEO GRID */}
       <div className="hidden lg:grid grid-cols-2 gap-3 p-6 w-[53vh]">
         {videoUrls.map((url, i) => (
           <div
@@ -174,5 +345,5 @@ export default function FinoraAuth(props) {
         ))}
       </div>
     </div>
-  );
+  )
 }
