@@ -33,15 +33,27 @@ public class JwtProvider {
         }
 
     public static String getEmailFromToken(String token) {
-        token = token.substring(7);
+
+        if (token == null || token.isBlank()) {
+            throw new IllegalArgumentException("JWT token is missing");
+        }
+
+        token = token.trim();
+
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-        String email = String.valueOf(claims.get("email"));
-        return email;
+
+        return claims.get("email", String.class);
     }
+
+
 
     private static String populateAuthorities(Collection<? extends GrantedAuthority> AUTHORITIES) {
         Set<String> auth = new HashSet<>();

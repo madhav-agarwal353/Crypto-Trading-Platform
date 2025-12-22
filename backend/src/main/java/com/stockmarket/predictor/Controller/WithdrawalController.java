@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("api//withdrawals")
+@RequestMapping("api/withdrawals")
 public class WithdrawalController {
 
     @Autowired

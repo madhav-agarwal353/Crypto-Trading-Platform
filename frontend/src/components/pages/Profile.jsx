@@ -3,8 +3,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import { useSelector } from "react-redux";
 const Profile = () => {
+  const auth = useSelector(state => state.auth);
+  const user = auth.user;
   const [twoStep, setTwoStep] = useState(true);
 
   return (
@@ -26,18 +28,17 @@ backdrop-blur-xl shadow-xl shadow-black/60
               </Avatar>
 
               <div>
-                <h2 className="text-xl font-semibold text-gray-100">John Doe</h2>
-                <p className="text-sm text-gray-400">john.doe@email.com</p>
+                <h2 className="text-xl font-semibold text-gray-100">{user.name}</h2>
+                <p className="text-sm text-gray-400">{user.email}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-sm text-gray-300">
-              <p><span className="text-gray-400">City:</span> New York</p>
-              <p><span className="text-gray-400">Date of Birth:</span> 12 Jan 1995</p>
-              <p><span className="text-gray-400">Postcode:</span> 10001</p>
-              <p><span className="text-gray-400">Nationality:</span> American</p>
-              <p><span className="text-gray-400">Country:</span> USA</p>
-              <p><span className="text-gray-400">Phone Number:</span> +1 234 567 890</p>
+              {/* {user.city && <p><span className="text-gray-400">City:</span> {user.city}</p>} */}
+              {/* {user.dateOfBirth && <p><span className="text-gray-400">Date of Birth:</span> {user.dateOfBirth}</p>} */}
+              {/* {user.postcode && <p><span className="text-gray-400">Postcode:</span> {user.postcode}</p>} */}
+              {/* {user.country && <p><span className="text-gray-400">Country:</span> {user.country}</p>} */}
+              {user.mobileNo && <p><span className="text-gray-400">Phone Number:</span> {user.mobileNo}</p>}
             </div>
           </CardContent>
         </Card>

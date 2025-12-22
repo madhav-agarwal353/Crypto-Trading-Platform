@@ -2,6 +2,8 @@ import React from 'react'
 import { House, BriefcaseBusiness, EyeClosed, Activity, BanknoteArrowUp, UserRoundPen, LogOut, BadgeCent, ChevronRight } from 'lucide-react';
 import { SheetClose } from '@/components/ui/sheet';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/Auth/Action';
 const menu = [
   { name: "Home", path: "/", icon: <House /> },
   { name: "Portfolio", path: "/portfolio", icon: <BriefcaseBusiness /> },
@@ -10,18 +12,28 @@ const menu = [
   { name: "Payment Details", path: "/payment-details", icon: <BadgeCent /> },
   { name: "Withdrawal", path: "/withdrawal", icon: <BanknoteArrowUp /> },
   { name: "Profile", path: "/profile", icon: <UserRoundPen /> },
-  { name: "Logout", path: "/activity", icon: <LogOut /> }
+  { name: "Logout", path: "/login", icon: <LogOut /> }
 ]
 
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(logout());
+  }
   return (
     <div className=" w-full flex flex-col items-center py-0 h-full overflow-y-scroll scrollbar-dark scroll-smooth">
       {menu.map((item, index) => (
-        <SheetClose key={index}>
+        <SheetClose key={index} asChild>
           <button
-            onClick={() => navigate(item.path)}
+            onClick={() => {
+              if (item.name === "Logout") {
+                handleLogout();
+              }
+              navigate(item.path)
+            }}
+
             className="
   group
   flex items-center justify-between

@@ -6,7 +6,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 public class AppConfig {
@@ -20,9 +22,11 @@ public class AppConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()
+                        .requestMatchers("/auth/**").permitAll() // login, register
+                        .requestMatchers("/api/**").authenticated()  // JWT required
+                        .anyRequest().permitAll()                     // public pages
                 );
+
 
 
         return http.build();
@@ -30,15 +34,14 @@ public class AppConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        org.springframework.web.cors.CorsConfiguration config = new org.springframework.web.cors.CorsConfiguration();
+        CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOriginPattern("*");
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
-        config.setAllowCredentials(true);
-
-        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        config.setAllowCredentials(false);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-
         return source;
     }
+
 }

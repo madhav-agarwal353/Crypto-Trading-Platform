@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { use } from 'react'
 import { ChevronRight } from 'lucide-react';
 import {
     Sheet,
@@ -16,9 +16,10 @@ import {
 } from "@/components/ui/avatar"
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-// tailwind.config.js
-
+import { useSelector } from 'react-redux';
 const Navbar = () => {
+    const auth = useSelector(state => state.auth);
+    const name = (auth.user).name;
     return (
         <div className='px-5 py-3 bg-gray-950 bg-opacity-1 z-10
         sticky top-0 left-0 right-0 flex justify-between items-center h-17'>
@@ -41,9 +42,9 @@ const Navbar = () => {
                                     />
 
                                 </Avatar>
-                                <h1 className="text-white text-3xl md:text-4xl font-normal tracking-tight font-brand transition-opacity duration-300 hover:opacity-80">
+                                <span className="text-white text-3xl md:text-4xl font-normal tracking-tight font-brand transition-opacity duration-300 hover:opacity-80">
                                     FINORA
-                                </h1>
+                                </span>
 
                             </SheetTitle>
                         </SheetHeader>
@@ -61,8 +62,10 @@ const Navbar = () => {
                 </div>
             </div>
             <Avatar>
-                <AvatarImage></AvatarImage>
-                <AvatarFallback>M</AvatarFallback>
+                {/* <AvatarImage></AvatarImage> */}
+                <AvatarFallback>
+                    {name.charAt(0).toUpperCase() + name.split(" ")[1].charAt(0).toUpperCase()}
+                </AvatarFallback>
             </Avatar>
         </div>
     )

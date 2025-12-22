@@ -1,4 +1,4 @@
-import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, GET_USER_REQUEST, GET_USER_REQUEST_SUCCESS, GET_USER_REQUEST_FAILURE } from "./ActionTypes"
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, GET_USER_REQUEST, GET_USER_REQUEST_SUCCESS, GET_USER_REQUEST_FAILURE, LOGOUT_REQUEST } from "./ActionTypes"
 
 const initialState = {
     user: null,
@@ -59,6 +59,12 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload
+            }
+        case LOGOUT_REQUEST:
+            return {
+                ...state,
+                user: null,
+                jwt: null
             }
         default:
             return state;

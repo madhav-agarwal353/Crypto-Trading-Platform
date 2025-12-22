@@ -23,7 +23,6 @@ public class UserController {
 
     @GetMapping("/users/profile")
     public ResponseEntity<?> getUserProfile(@RequestHeader("Authorization") String token) {
-        System.out.println("hi");
         User user = userService.findUserByJwtToken(token);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

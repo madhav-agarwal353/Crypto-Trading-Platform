@@ -115,6 +115,9 @@ const CoinsTable = () => {
             paymentMethod: "Credit Card",
         },
     ];
+    const coin = {
+        
+    }
 
     return (
         <Table className='w-full'>
