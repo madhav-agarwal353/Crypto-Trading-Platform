@@ -2,9 +2,7 @@ import React from 'react'
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -15,137 +13,86 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { useNavigate } from 'react-router-dom';
-const CoinsTable = () => {
+
+const CoinsTable = (props) => {
     const navigate = useNavigate();
-    const invoices = [
-        {
-            invoice: "INV001",
-            paymentStatus: "Paid",
-            totalAmount: "$250.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV002",
-            paymentStatus: "Pending",
-            totalAmount: "$150.00",
-            paymentMethod: "PayPal",
-        },
-        {
-            invoice: "INV003",
-            paymentStatus: "Unpaid",
-            totalAmount: "$350.00",
-            paymentMethod: "Bank Transfer",
-        },
-        {
-            invoice: "INV004",
-            paymentStatus: "Paid",
-            totalAmount: "$450.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV005",
-            paymentStatus: "Paid",
-            totalAmount: "$550.00",
-            paymentMethod: "PayPal",
-        },
-        {
-            invoice: "INV006",
-            paymentStatus: "Pending",
-            totalAmount: "$200.00",
-            paymentMethod: "Bank Transfer",
-        },
-        {
-            invoice: "INV007",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV008",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV009",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV010",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV011",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV012",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV013",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV014",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV015",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-        {
-            invoice: "INV016",
-            paymentStatus: "Unpaid",
-            totalAmount: "$300.00",
-            paymentMethod: "Credit Card",
-        },
-    ];
-    const coin = {
-        
-    }
+    const { coin, category } = props;
+
+    // ✅ Format helpers (concise)
+    const formatCompact = (num) =>
+        num?.toLocaleString("en-US", {
+            notation: "compact",
+            maximumFractionDigits: 2,
+        });
+
+    const formatPrice = (num) =>
+        num?.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 2,
+        });
 
     return (
-        <Table className='w-full'>
+        <Table className="w-full">
             <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[100px]">Coin</TableHead>
-                    <TableHead>SYMBOL</TableHead>
-                    <TableHead>VOLUME</TableHead>
-                    <TableHead>MARKET CAP</TableHead>
-                    <TableHead>24H</TableHead>
+                    <TableHead className="w-[220px] text-left">Coin</TableHead>
+                    <TableHead className="text-left">Symbol</TableHead>
+                    <TableHead className="text-left">Volume</TableHead>
+                    <TableHead className="text-left">Market Cap</TableHead>
+                    <TableHead className="text-left">24H</TableHead>
                     <TableHead className="text-right">Price</TableHead>
                 </TableRow>
             </TableHeader>
+
             <TableBody>
-                {invoices.map((invoice) => (
-                    <TableRow key={invoice.invoice} className='h-20' onClick={() => navigate("/stock-details")}>
-                        <TableCell className="h-20 font-medium flex items-center justify-center gap-2">
-                            <Avatar>
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <span>Coin bro</span>
+                {coin.map((coin) => (
+                    <TableRow
+                        key={coin.id}
+                        className="h-20 cursor-pointer hover:bg-gray-800/60 transition-colors"
+                        onClick={() => navigate(`/market/${coin.id}`)}
+                    >
+                        {/* Coin */}
+                        <TableCell className="font-medium">
+                            <div className="flex items-center gap-3">
+                                <Avatar className="h-9 w-9">
+                                    <AvatarImage src={coin.image} />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                                <span>{coin.name}</span>
+                            </div>
                         </TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell>hi</TableCell>
-                        <TableCell className="text-right">end</TableCell>
+
+                        {/* Symbol */}
+                        <TableCell className="uppercase">
+                            {coin.symbol}
+                        </TableCell>
+
+                        {/* Volume */}
+                        <TableCell>
+                            {formatCompact(coin.total_volume)}
+                        </TableCell>
+
+                        {/* Market Cap */}
+                        <TableCell>
+                            {formatCompact(coin.market_cap)}
+                        </TableCell>
+
+                        {/* 24H */}
+                        <TableCell
+                            className={
+                                coin.price_change_percentage_24h >= 0
+                                    ? "text-green-500"
+                                    : "text-red-500"
+                            }
+                        >
+                            {Math.abs(coin.price_change_percentage_24h)}%
+                        </TableCell>
+
+                        {/* Price */}
+                        <TableCell className="text-right">
+                            {formatPrice(coin.current_price)}
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
@@ -153,4 +100,4 @@ const CoinsTable = () => {
     )
 }
 
-export default CoinsTable
+export default CoinsTable;

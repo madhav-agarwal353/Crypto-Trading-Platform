@@ -113,14 +113,6 @@ function App() {
           }
         />
         <Route
-          path="/stock-details"
-          element={
-            <ProtectedRoute auth={auth}>
-              <StockDetails />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/watchlist"
           element={
             <ProtectedRoute auth={auth}>

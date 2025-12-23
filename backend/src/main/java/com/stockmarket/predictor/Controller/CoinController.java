@@ -36,7 +36,7 @@ public class CoinController {
     }
 
     @GetMapping("/search")
-    ResponseEntity<?> searchCoins(@RequestParam("keyword") String keyword) throws Exception {
+    ResponseEntity<?> searchCoins(@RequestParam("query") String keyword) throws Exception {
         String result = coinService.searchCoins(keyword);
         Object json = objectMapper.readTree(result);
         return ResponseEntity.ok(json);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ReactApexChart from "react-apexcharts";
 import { Button } from '../ui/button';
 import { useState } from 'react';
@@ -34,11 +34,30 @@ const timeSeries = [
         value: 365,
     }
 ]
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fetchCoinDetailsById, fetchMarketChartData } from '../store/Coin/Action';
+import { useMatch } from "react-router-dom";
 const Chart = () => {
-    const [activeLabel, setactiveLabel] = useState("1 Day")
-    const handleActiveLable = (value) => {
-        setactiveLabel(value)
-    }
+    const dispatch = useDispatch();
+
+    const match = useMatch("/market/:id");
+    const id = match?.params?.id;
+    
+
+    const [activeLabel, setActiveLabel] = useState("1 Day");
+
+    const handleActiveLabel = (value) => {
+        setActiveLabel(value);
+    };
+
+    useEffect(() => {
+        if (!id) return;
+        console.log("Route param id:", id);
+        dispatch(fetchCoinDetailsById(id));
+    }, [dispatch, id]);
+
+
     const series = [
         {
             data: [

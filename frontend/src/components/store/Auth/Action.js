@@ -52,7 +52,7 @@ export const getUserData = (jwt) => async (dispatch) => {
         const user = response.data
         console.log("Registration successful:", user)
         dispatch({ type: GET_USER_REQUEST_SUCCESS, payload: user })
-        jwt.navigate("/");
+        // jwt.navigate("/");
     }
 
     catch (error) {

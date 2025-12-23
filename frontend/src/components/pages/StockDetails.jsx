@@ -8,7 +8,10 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 import Trade from "@/components/lib/Trade"
-
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { fetchCoinDetailsById } from '../store/Coin/Action';
 const timeSeries = [
   {
     keyword: "DIGITAL_CURRENCY_DAILY",
@@ -40,6 +43,14 @@ const Chart = () => {
   const handleActiveLable = (value) => {
     setactiveLabel(value)
   }
+  const coin = useSelector((state) => state.coin);
+  const dispatch = useDispatch()
+  const params = useParams();
+  const { id } = useParams();
+  useEffect(() => {
+    console.log(params, id);
+    dispatch(fetchCoinDetailsById(id));
+  }, [dispatch, id])
   const series = [
     {
       data: [
@@ -531,22 +542,26 @@ const Chart = () => {
         <div className='flex gap-2 text-xl pb-10'>
           <div>
             <Avatar className='h-15 w-15'>
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={coin.coinDetails.image.large} />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
           </div>
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <p>BTN</p>
-              <p className='text-gray-400'>Bitcoin</p>
+              <p className='capitalize'>{coin.coinDetails.symbol}</p>
+              <p className='text-gray-400'>{coin.coinDetails.name}</p>
             </div>
             <div className='flex items-end gap-2'>
               <p className='text-xl font-bold'>
-                5327283
+                ${coin.coinDetails.market_data?.current_price.usd}
               </p>
-              <p className='text-red-600'>
-                <span>-1319049822.578</span>
-                <span>(-028803%)</span>
+              <p className={
+                coin.coinDetails.market_data?.price_change_percentage_24h >= 0
+                  ? "text-green-500"
+                  : "text-red-500"
+              }
+              >
+                {Math.abs(coin.coinDetails.market_data?.price_change_percentage_24h)}%
               </p>
             </div>
           </div>

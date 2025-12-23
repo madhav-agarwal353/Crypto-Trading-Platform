@@ -22,9 +22,10 @@ public class AppConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll() // login, register
-                        .requestMatchers("/api/**").authenticated()  // JWT required
-                        .anyRequest().permitAll()                     // public pages
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/coins/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
                 );
 
 
