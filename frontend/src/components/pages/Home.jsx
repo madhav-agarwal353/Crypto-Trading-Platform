@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import CoinsTable from "@/components/lib/CoinsTable";
 import Chart from "@/components/lib/Chart";
 import { useDispatch, useSelector } from "react-redux";
-import { getCoinList } from "../store/Coin/Action";
+import { getCoinList, getTop50Coins } from "../store/Coin/Action";
 import {
     Pagination,
     PaginationContent,
@@ -13,7 +13,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import News from "../lib/News";
 const Home = () => {
     const dispatch = useDispatch();
     const [category, setCategory] = useState("all");
@@ -22,15 +22,20 @@ const Home = () => {
     // ✅ ONLY state.coin
     const coin = useSelector((state) => state.coin);
 
-    // Fetch coins on page change
     useEffect(() => {
         dispatch(getCoinList(page));
     }, [dispatch, page]);
 
+    useEffect(() => {
+        dispatch(getTop50Coins());
+        console.log("undefine issue", coin.getTop50Coins);
+    }, [dispatch, category]);
+
+
     // Category handler
     const handleCategory = useCallback((value) => {
         setCategory(value);
-        setPage(1); // reset page when category changes
+        setPage(1);
     }, []);
 
     // Pagination handler
@@ -39,10 +44,12 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="relative h-[calc(100vh-70px)]">
+        <div className="relative ">
+            {/* h-[calc(100vh-70px)] */}
+                <News />
             <div className="lg:flex">
                 {/* LEFT SIDE */}
-                <div className="lg:w-[50%] border-r h-[calc(100vh-70px)] flex flex-col">
+                <div className="w-full h-[calc(100vh-70px)] flex flex-col">
 
                     {/* Top Buttons */}
                     <div className="p-7 flex items-center gap-4 shrink-0">
@@ -77,53 +84,58 @@ const Home = () => {
 
                     {/* Table */}
                     <div className="flex-1 px-4 overflow-y-auto scrollbar-dark scroll-smooth">
-                        <CoinsTable coin={coin.coins} category={category} />
+                        <CoinsTable
+                            coin={category === "top50" ? coin.top50Coins : coin.coins} category={category}
+                        />
                     </div>
 
-                    {/* Pagination */}
-                    <Pagination className="shrink-0 sticky bottom-0 bg-gray-900 flex justify-center items-center w-full z-30">
-                        <PaginationContent>
+                    {/* Pagination */}{
+                        category === "all" &&
+                        <Pagination className="shrink-0 sticky bottom-0 bg-gray-900 flex justify-center items-center w-full z-30">
+                            <PaginationContent>
 
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    onClick={() => page > 1 && goToPage(page - 1)}
-                                />
-                            </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationPrevious
+                                        onClick={() => page > 1 && goToPage(page - 1)}
+                                    />
+                                </PaginationItem>
 
-                            <PaginationItem>
-                                <PaginationLink isActive onClick={() => goToPage(page)}>
-                                    {page}
-                                </PaginationLink>
-                            </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink isActive onClick={() => goToPage(page)}>
+                                        {page}
+                                    </PaginationLink>
+                                </PaginationItem>
 
-                            <PaginationItem>
-                                <PaginationLink onClick={() => goToPage(page + 1)}>
-                                    {page + 1}
-                                </PaginationLink>
-                            </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink onClick={() => goToPage(page + 1)}>
+                                        {page + 1}
+                                    </PaginationLink>
+                                </PaginationItem>
 
-                            <PaginationItem>
-                                <PaginationLink onClick={() => goToPage(page + 2)}>
-                                    {page + 2}
-                                </PaginationLink>
-                            </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationLink onClick={() => goToPage(page + 2)}>
+                                        {page + 2}
+                                    </PaginationLink>
+                                </PaginationItem>
 
-                            <PaginationItem>
-                                <PaginationEllipsis />
-                            </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationEllipsis />
+                                </PaginationItem>
 
-                            <PaginationItem>
-                                <PaginationNext onClick={() => goToPage(page + 1)} />
-                            </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationNext onClick={() => goToPage(page + 1)} />
+                                </PaginationItem>
 
-                        </PaginationContent>
-                    </Pagination>
+                            </PaginationContent>
+                        </Pagination>
+                    }
                 </div>
 
-                {/* RIGHT SIDE */}
+                {/* RIGHT SIDE
                 <div className="hidden lg:block lg:w-[50%] p-7 h-[calc(100vh-4.25rem)] overflow-hidden">
                     <Chart />
-                </div>
+                </div> */}
+
             </div>
         </div>
     );

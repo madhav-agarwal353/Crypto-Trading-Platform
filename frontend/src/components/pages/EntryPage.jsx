@@ -64,14 +64,14 @@ export default function FinoraAuth({ name }) {
   }, [user, mode, navigate])
 
   const videoUrls = [
-    // "https://cdn.pixabay.com/video/2022/03/31/112471-694704574_large.mp4",
-    // "https://cdn.pixabay.com/video/2024/07/15/221356_large.mp4",
-    // "https://cdn.pixabay.com/video/2023/02/09/149982-797471128_large.mp4",
-    // "https://cdn.pixabay.com/video/2021/08/15/85156-590779424_large.mp4",
-    // "https://cdn.pixabay.com/video/2023/01/08/145744-787427556_large.mp4",
-    // "https://cdn.pixabay.com/video/2017/12/18/13460-248644879_large.mp4",
-    // "https://cdn.pixabay.com/video/2022/10/11/134428-759734802_large.mp4",
-    // "https://cdn.pixabay.com/video/2020/03/05/33269-396529577_large.mp4",
+    "https://cdn.pixabay.com/video/2022/03/31/112471-694704574_large.mp4",
+    "https://cdn.pixabay.com/video/2024/07/15/221356_large.mp4",
+    "https://cdn.pixabay.com/video/2023/02/09/149982-797471128_large.mp4",
+    "https://cdn.pixabay.com/video/2021/08/15/85156-590779424_large.mp4",
+    "https://cdn.pixabay.com/video/2023/01/08/145744-787427556_large.mp4",
+    "https://cdn.pixabay.com/video/2017/12/18/13460-248644879_large.mp4",
+    "https://cdn.pixabay.com/video/2022/10/11/134428-759734802_large.mp4",
+    "https://cdn.pixabay.com/video/2020/03/05/33269-396529577_large.mp4",
   ]
 
   return (

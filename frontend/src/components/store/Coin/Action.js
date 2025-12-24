@@ -43,11 +43,7 @@ export const fetchMarketChartData = (coinId, days, jwt) => async (dispatch) => {
     const baseURL = "http://localhost:8080"
     // process.env.REACT_APP_API_URL ||
     try {
-        const response = await axios.get(`${baseURL}/api/coins/${coinId}/market-chart?days=${days}`, {
-            headers: {
-                Authorization: `Bearer ${jwt}`
-            }
-        })
+        const response = await axios.get(`${baseURL}/api/coins/${coinId}/market-chart?days=${days}`)
         const marketData = response.data
         console.log("Market data fetched successfully:", marketData)
         dispatch({ type: FETCH_COIN_MARKET_DATA_SUCCESS, payload: marketData })

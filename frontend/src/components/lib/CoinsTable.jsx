@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom';
 const CoinsTable = (props) => {
     const navigate = useNavigate();
     const { coin, category } = props;
-
     // ✅ Format helpers (concise)
     const formatCompact = (num) =>
         num?.toLocaleString("en-US", {
@@ -46,52 +45,52 @@ const CoinsTable = (props) => {
             </TableHeader>
 
             <TableBody>
-                {coin.map((coin) => (
+                {coin.map((c) => (
                     <TableRow
-                        key={coin.id}
+                        key={c.id}
                         className="h-20 cursor-pointer hover:bg-gray-800/60 transition-colors"
-                        onClick={() => navigate(`/market/${coin.id}`)}
+                        onClick={() => navigate(`/market/${c.id}`)}
                     >
                         {/* Coin */}
                         <TableCell className="font-medium">
                             <div className="flex items-center gap-3">
                                 <Avatar className="h-9 w-9">
-                                    <AvatarImage src={coin.image} />
+                                    <AvatarImage src={c.image} />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
-                                <span>{coin.name}</span>
+                                <span>{c.name}</span>
                             </div>
                         </TableCell>
 
                         {/* Symbol */}
                         <TableCell className="uppercase">
-                            {coin.symbol}
+                            {c.symbol}
                         </TableCell>
 
                         {/* Volume */}
                         <TableCell>
-                            {formatCompact(coin.total_volume)}
+                            {formatCompact(c.total_volume)}
                         </TableCell>
 
                         {/* Market Cap */}
                         <TableCell>
-                            {formatCompact(coin.market_cap)}
+                            {formatCompact(c.market_cap)}
                         </TableCell>
 
                         {/* 24H */}
                         <TableCell
                             className={
-                                coin.price_change_percentage_24h >= 0
+                                c.price_change_percentage_24h >= 0
                                     ? "text-green-500"
                                     : "text-red-500"
                             }
                         >
-                            {Math.abs(coin.price_change_percentage_24h)}%
+                            {Math.abs(c.price_change_percentage_24h)}%
                         </TableCell>
 
                         {/* Price */}
                         <TableCell className="text-right">
-                            {formatPrice(coin.current_price)}
+                            {formatPrice(c.current_price)}
                         </TableCell>
                     </TableRow>
                 ))}
