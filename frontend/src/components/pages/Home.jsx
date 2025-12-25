@@ -14,6 +14,12 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import News from "../lib/News";
+import {
+    Layers,
+    Trophy,
+    TrendingUp,
+    TrendingDown,
+} from "lucide-react";
 const Home = () => {
     const dispatch = useDispatch();
     const [category, setCategory] = useState("all");
@@ -46,38 +52,46 @@ const Home = () => {
     return (
         <div className="relative ">
             {/* h-[calc(100vh-70px)] */}
-                <News />
+            <News />
             <div className="lg:flex">
                 {/* LEFT SIDE */}
-                <div className="w-full h-[calc(100vh-70px)] flex flex-col">
+                <div className="w-full flex flex-col">
 
                     {/* Top Buttons */}
                     <div className="p-7 flex items-center gap-4 shrink-0">
                         <Button
                             onClick={() => handleCategory("all")}
                             variant={category === "all" ? "default" : "outline"}
+                            className="flex items-center gap-2"
                         >
+                            <Layers className="w-4 h-4" />
                             All
                         </Button>
 
                         <Button
                             onClick={() => handleCategory("top50")}
                             variant={category === "top50" ? "default" : "outline"}
+                            className="flex items-center gap-2"
                         >
+                            <Trophy className="w-4 h-4" />
                             Top 50
                         </Button>
 
                         <Button
                             onClick={() => handleCategory("gainer")}
                             variant={category === "gainer" ? "default" : "outline"}
+                            className="flex items-center gap-2"
                         >
+                            <TrendingUp className="w-4 h-4 text-green-500" />
                             Top Gainer
                         </Button>
 
                         <Button
                             onClick={() => handleCategory("loser")}
                             variant={category === "loser" ? "default" : "outline"}
+                            className="flex items-center gap-2"
                         >
+                            <TrendingDown className="w-4 h-4 text-red-500" />
                             Top Loser
                         </Button>
                     </div>

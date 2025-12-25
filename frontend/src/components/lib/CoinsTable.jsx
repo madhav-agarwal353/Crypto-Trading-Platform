@@ -13,6 +13,8 @@ import {
     AvatarImage,
 } from "@/components/ui/avatar"
 import { useNavigate } from 'react-router-dom';
+import { TriangleUpIcon, TriangleDownIcon } from "@radix-ui/react-icons";
+
 
 const CoinsTable = (props) => {
     const navigate = useNavigate();
@@ -79,14 +81,22 @@ const CoinsTable = (props) => {
 
                         {/* 24H */}
                         <TableCell
-                            className={
-                                c.price_change_percentage_24h >= 0
+                            className={`flex items-center gap-1 font-medium ${c.price_change_percentage_24h >= 0
                                     ? "text-green-500"
                                     : "text-red-500"
-                            }
+                                }`}
                         >
+                            {c.price_change_percentage_24h >= 0 ? (
+                                <TriangleUpIcon className="w-7 h-7" />
+                            ) : (
+                                <TriangleDownIcon className="w-7 h-7" />
+                            )}
+
                             {Math.abs(c.price_change_percentage_24h)}%
                         </TableCell>
+
+
+
 
                         {/* Price */}
                         <TableCell className="text-right">

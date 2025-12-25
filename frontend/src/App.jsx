@@ -5,7 +5,6 @@ import Home from '@/components/pages/Home';
 import Portfolio from './components/pages/Portfolio';
 import Activity from './components/pages/Activity';
 import Wallet from './components/pages/Wallet';
-import Withdrawal from './components/pages/Withdrawal';
 import PaymentDetails from './components/pages/PaymentDetails';
 import StockDetails from './components/pages/StockDetails';
 import WatchList from './components/pages/WatchList';
@@ -89,10 +88,10 @@ function App() {
           }
         />
         <Route
-          path="/withdrawal"
+          path="/wallet"
           element={
             <ProtectedRoute auth={auth}>
-              <Withdrawal />
+              <Wallet/>
             </ProtectedRoute>
           }
         />

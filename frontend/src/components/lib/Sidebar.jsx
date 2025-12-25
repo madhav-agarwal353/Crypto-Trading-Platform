@@ -10,7 +10,7 @@ const menu = [
   { name: "WatchList", path: "/watchlist", icon: <EyeClosed /> },
   { name: "Activity", path: "/activity", icon: <Activity /> },
   { name: "Payment Details", path: "/payment-details", icon: <BadgeCent /> },
-  { name: "Withdrawal", path: "/withdrawal", icon: <BanknoteArrowUp /> },
+  { name: "Wallet", path: "/wallet", icon: <BanknoteArrowUp /> },
   { name: "Profile", path: "/profile", icon: <UserRoundPen /> },
   { name: "Logout", path: "/login", icon: <LogOut /> }
 ]
