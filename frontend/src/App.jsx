@@ -91,7 +91,7 @@ function App() {
           path="/wallet"
           element={
             <ProtectedRoute auth={auth}>
-              <Wallet/>
+              <Wallet />
             </ProtectedRoute>
           }
         />

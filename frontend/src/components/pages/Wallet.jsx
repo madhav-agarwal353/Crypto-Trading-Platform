@@ -1,6 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useState } from "react";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
@@ -15,8 +13,16 @@ import {
   Check,
 } from "lucide-react";
 
-
-import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Dialog,
   DialogClose,
@@ -26,31 +32,69 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
 import RazorpayLogo from "@/assets/razorpay.svg";
 import StripeLogo from "@/assets/stripe.svg";
-
+import { useDispatch } from "react-redux";
 export default function Wallet() {
-  const [copied, setCopied] = useState(false);
-
+  /* ------------------ STATE ------------------ */
   const walletId = "WLT-9F3A-82KD-44P";
+  const [copied, setCopied] = useState(false);
+  const [reloading, setReloading] = useState(false);
+  const dispatch = useDispatch()
+  const [amount, setAmount] = useState('')
+  const [paymentMethod, setPaymentMethod] = useState("razorpay")
 
+  
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (!amount) return
+    // dispatch(
+    //   addMoneyRequest({
+    //     amount: Number(amount),
+    //     paymentMethod,
+    //   })
+    // )
+    console.log(amount);
+  }
+  const handleWithdraw = (e) => {
+    e.preventDefault()
+    if (!amount) return
+    // dispatch(
+    //   withdrawMoneyRequest({
+    //     amount: Number(amount),
+    //   })
+    // )
+    console.log(amount);
+  }
+  const handleTransfer = (e) => {
+    e.preventDefault()
+
+    if (!walletId || !amount) return
+
+    // dispatch(
+    //   transferMoneyRequest({
+    //     walletId,
+    //     amount: Number(amount),
+    //   })
+    // )
+    console.log(amount);
+  }
   const handleCopy = async () => {
     await navigator.clipboard.writeText(walletId);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const [reloading, setReloading] = useState(false);
   const handleReload = () => {
     setReloading(true);
-    setTimeout(() => {
-      setReloading(false);
-    }, 1200);
+    setTimeout(() => setReloading(false), 1200);
   };
 
+  /* ------------------ MOCK DATA ------------------ */
   const transactions = [
     { id: 1, type: "Add Money", amount: "+₹5,000", date: "2025-01-12" },
     { id: 2, type: "Transfer", amount: "-₹1,200", date: "2025-01-11" },
@@ -58,150 +102,223 @@ export default function Wallet() {
     { id: 4, type: "Add Money", amount: "+₹2,000", date: "2025-01-09" },
   ];
 
+  /* ------------------ UI ------------------ */
   return (
     <div className="min-h-screen bg-background text-foreground p-6">
       <div className="max-w-6xl mx-auto space-y-8">
 
-        {/* Glass Balance Card */}
+        {/* ================= GLASS BALANCE CARD ================= */}
         <Card className="relative overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-lg">
-          {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-transparent" />
 
-          <CardContent className="relative p-6">
-            <div className="flex flex-col gap-5">
+          <CardContent className="relative p-6 space-y-5">
 
-              {/* Top Row: Balance + Actions */}
-              <div className="flex items-center justify-between">
-                {/* Balance */}
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <WalletIcon className="w-4 h-4" />
-                    <span className="text-sm">Total Balance</span>
-                  </div>
-                  <div className="text-4xl font-semibold tracking-tight">
-                    ₹24,500.00
-                  </div>
+            {/* Balance + Actions */}
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                  <WalletIcon className="w-4 h-4" />
+                  Total Balance
                 </div>
-
-                {/* Actions */}
-                <div className="flex gap-3">
-                  {/* Add */}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button className="bg-primary/90 hover:bg-primary">
-                        <ArrowDownToLine className="w-4 h-4 mr-2" />
-                        Add
-                      </Button>
-                    </DialogTrigger>
-                    {/* DialogContent stays same as your code */}
-                  </Dialog>
-
-                  {/* Withdraw */}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="secondary"
-                        className="bg-white/10 hover:bg-white/20"
-                      >
-                        <ArrowUpFromLine className="w-4 h-4 mr-2" />
-                        Withdraw
-                      </Button>
-                    </DialogTrigger>
-                    {/* DialogContent stays same as your code */}
-                  </Dialog>
-
-                  {/* Transfer */}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className="border-white/20 bg-white/5 hover:bg-white/10"
-                      >
-                        <Send className="w-4 h-4 mr-2" />
-                        Transfer
-                      </Button>
-                    </DialogTrigger>
-                    {/* DialogContent stays same as your code */}
-                  </Dialog>
+                <div className="text-4xl font-semibold mt-1">
+                  ₹24,500.00
                 </div>
               </div>
 
-              {/* Wallet ID Row */}
-              <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                <span className="font-medium">Wallet ID:</span>
+              <div className="flex gap-3">
 
-                <span className="font-mono text-foreground select-all">
-                  WLT-9F3A-82KD-44P
-                </span>
+                {/* ADD MONEY */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="bg-primary/90 hover:bg-primary">
+                      <ArrowDownToLine className="w-4 h-4 mr-2" />
+                      Add
+                    </Button>
+                  </DialogTrigger>
 
-                <button
-                  onClick={handleCopy}
-                  className="
-            group flex items-center justify-center
-            h-8 w-8 rounded-lg
-            border border-white/10
-            bg-white/5
-            hover:bg-white/10
-            transition
-          "
-                  aria-label="Copy Wallet ID"
-                >
-                  {copied ? (
-                    <Check className="h-4 w-4 text-emerald-400" />
-                  ) : (
-                    <Copy className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
-                  )}
-                </button>
+                  <DialogContent className="bg-black/60 backdrop-blur-2xl border border-white/10">
+                    <DialogHeader>
+                      <DialogTitle>Add Money</DialogTitle>
+                    </DialogHeader>
 
-                {copied && (
-                  <span className="text-emerald-400 text-xs">
-                    Copied
-                  </span>
-                )}
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="amount">Amount</Label>
+                        <Input
+                          id="amount"
+                          placeholder="₹ Enter amount"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          type="number"
+                        />
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label>Payment Method</Label>
+
+                        <label className="flex items-center gap-3 p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="pay"
+                            value="razorpay"
+                            checked={paymentMethod === "razorpay"}
+                            onChange={() => setPaymentMethod("razorpay")}
+                          />
+                          <img
+                            src={RazorpayLogo}
+                            className="h-8 bg-white rounded px-3"
+                            alt="Razorpay"
+                          />
+                        </label>
+
+                        <label className="flex items-center gap-3 p-3 rounded-xl border border-white/10 bg-white/5 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="pay"
+                            value="stripe"
+                            checked={paymentMethod === "stripe"}
+                            onChange={() => setPaymentMethod("stripe")}
+                          />
+                          <img
+                            src={StripeLogo}
+                            className="h-8 bg-white rounded px-3"
+                            alt="Stripe"
+                          />
+                        </label>
+                      </div>
+
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button type="button" variant="outline">
+                            Cancel
+                          </Button>
+                        </DialogClose>
+
+                        <Button type="submit">Proceed</Button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+
+                {/* WITHDRAW */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="secondary">
+                      <ArrowUpFromLine className="w-4 h-4 mr-2" />
+                      Withdraw
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent className="bg-black/60 backdrop-blur-2xl border border-white/10">
+                    <DialogHeader>
+                      <DialogTitle>Withdraw Funds</DialogTitle>
+                      <DialogDescription>
+                        Transfer to your bank
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <form onSubmit={handleWithdraw} className="space-y-4">
+                      <Input
+                        type="number"
+                        placeholder="₹ Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                      />
+
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button type="button" variant="outline">
+                            Cancel
+                          </Button>
+                        </DialogClose>
+
+                        <Button type="submit" variant="destructive">
+                          Withdraw
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+
+                {/* TRANSFER */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="secondary">
+                      <Send className="w-4 h-4 mr-2" />
+                      Transfer
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogContent className="bg-black/60 backdrop-blur-2xl border border-white/10">
+                    <DialogHeader>
+                      <DialogTitle>Transfer Money</DialogTitle>
+                    </DialogHeader>
+
+                    <form onSubmit={handleTransfer} className="space-y-3">
+                      <Input
+                        placeholder="Recipient Wallet ID"
+                        value={walletId}
+                        onChange={(e) => setWalletId(e.target.value)}
+                      />
+
+                      <Input
+                        type="number"
+                        placeholder="₹ Amount"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                      />
+
+                      <DialogFooter>
+                        <DialogClose asChild>
+                          <Button type="button" variant="outline">
+                            Cancel
+                          </Button>
+                        </DialogClose>
+
+                        <Button type="submit">Send</Button>
+                      </DialogFooter>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+
               </div>
-
             </div>
+
+            {/* Wallet ID */}
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              Wallet ID:
+              <span className="font-mono text-foreground">{walletId}</span>
+
+              <button
+                onClick={handleCopy}
+                className="h-8 w-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10"
+              >
+                {copied ? (
+                  <Check className="h-4 w-4 text-emerald-400" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </button>
+
+              {copied && <span className="text-emerald-400">Copied</span>}
+            </div>
+
           </CardContent>
         </Card>
 
-
-        {/* Glass Transaction History */}
-        <Card className="border border-white/10 bg-white/5 backdrop-blur-xl shadow-lg">
+        {/* ================= TRANSACTIONS ================= */}
+        <Card className="border border-white/10 bg-white/5 backdrop-blur-xl">
           <CardContent className="p-6">
-
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Transaction History
-              </h2>
-
-              <button
-                onClick={handleReload}
-                disabled={reloading}
-                className="
-          group flex items-center gap-2
-          px-3 py-2 rounded-xl
-          bg-white/5 backdrop-blur-xl
-          border border-white/10
-          hover:bg-white/10
-          transition-all duration-300
-          disabled:opacity-60
-        "
-              >
-                <RotateCw
-                  className={`
-            h-4 w-4 text-muted-foreground
-            transition-transform duration-700
-            ${reloading ? "animate-spin text-primary" : "group-hover:rotate-180"}
-          `}
-                />
-                <span className="text-sm text-muted-foreground">Reload</span>
+            <div className="flex justify-between mb-4">
+              <h2 className="font-semibold">Transaction History</h2>
+              <button onClick={handleReload}>
+                <RotateCw className={`h-4 w-4 ${reloading && "animate-spin"}`} />
               </button>
             </div>
 
             <Table>
               <TableHeader>
-                <TableRow className="border-white/10">
+                <TableRow>
                   <TableHead>Type</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
@@ -209,54 +326,30 @@ export default function Wallet() {
               </TableHeader>
 
               <TableBody>
-                {transactions.map((tx) => {
+                {transactions.map(tx => {
                   const isCredit = tx.amount.startsWith("+");
-
-                  const iconMap = {
-                    "Add Money": Coins,
-                    "Withdraw": ArrowUpFromLine,
-                    "Transfer": Send,
-                    "Buy": TrendingUp,
-                    "Sell": TrendingDown,
-                  };
-
-                  const Icon = iconMap[tx.type] || Coins;
+                  const Icon =
+                    tx.type === "Add Money"
+                      ? Coins
+                      : tx.type === "Withdraw"
+                        ? ArrowUpFromLine
+                        : Send;
 
                   return (
-                    <TableRow
-                      key={tx.id}
-                      className="border-white/10 hover:bg-white/5 transition"
-                    >
-                      {/* Type with Icon */}
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-3">
-
-                          {/* Glass Icon Avatar */}
+                    <TableRow key={tx.id}>
+                      <TableCell>
+                        <div className="flex gap-3 items-center">
                           <div
-                            className={`
-                      h-9 w-9 flex items-center justify-center
-                      rounded-xl border border-white/10
-                      backdrop-blur-xl
-                      ${isCredit
-                                ? "bg-emerald-400/20 text-emerald-400"
-                                : "bg-red-400/20 text-red-400"}
-                    `}
+                            className={`h-9 w-9 rounded-xl flex items-center justify-center
+                            ${isCredit ? "bg-emerald-400/20 text-emerald-400" : "bg-red-400/20 text-red-400"}`}
                           >
                             <Icon className="h-4 w-4" />
                           </div>
-
-                          <span>{tx.type}</span>
+                          {tx.type}
                         </div>
                       </TableCell>
-
-                      <TableCell className="text-muted-foreground">
-                        {tx.date}
-                      </TableCell>
-
-                      <TableCell
-                        className={`text-right font-semibold ${isCredit ? "text-primary" : "text-destructive"
-                          }`}
-                      >
+                      <TableCell>{tx.date}</TableCell>
+                      <TableCell className={`text-right font-semibold ${isCredit ? "text-primary" : "text-destructive"}`}>
                         {tx.amount}
                       </TableCell>
                     </TableRow>
@@ -267,7 +360,6 @@ export default function Wallet() {
 
           </CardContent>
         </Card>
-
 
       </div>
     </div>
