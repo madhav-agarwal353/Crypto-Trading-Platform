@@ -1,4 +1,3 @@
-import { error } from 'console';
 import * as actionTypes from './ActionTypes';
 const initialState = {
     wallet: {},
@@ -7,7 +6,7 @@ const initialState = {
     error: null
 };
 
-export const walletReducer = (state = initialState, action) => {
+const walletReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.GET_WALLET_REQUEST:
         case actionTypes.GET_WALLET_TRANSACTIONS_REQUEST:
@@ -23,7 +22,10 @@ export const walletReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: false,
-                wallet: action.payload
+                wallet: {
+                    id: action.payload.id,
+                    balance: Number(action.payload.balance),
+                }
             };
         case actionTypes.GET_WALLET_TRANSACTIONS_SUCCESS:
             return {
@@ -50,3 +52,5 @@ export const walletReducer = (state = initialState, action) => {
             return state;
     }
 };
+
+export default walletReducer;

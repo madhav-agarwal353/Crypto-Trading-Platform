@@ -12,7 +12,6 @@ import {
   Copy,
   Check,
 } from "lucide-react";
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -35,29 +34,44 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
 import RazorpayLogo from "@/assets/razorpay.svg";
 import StripeLogo from "@/assets/stripe.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { paymentHandler, transferMoney, getUserWallet, getWalletTransactions } from "../store/Wallet/Action";
+import { useEffect } from "react";
+import { set } from "zod";
+
+
+
 export default function Wallet() {
-  /* ------------------ STATE ------------------ */
-  const walletId = "WLT-9F3A-82KD-44P";
+  const [walletId, setWalletId] = useState("");
+  const [walletAmount, setWalletAmount] = useState(0);
   const [copied, setCopied] = useState(false);
   const [reloading, setReloading] = useState(false);
   const dispatch = useDispatch()
   const [amount, setAmount] = useState('')
   const [paymentMethod, setPaymentMethod] = useState("razorpay")
 
-  
+  const wallet = useSelector(state => state.wallet);
+  const token = localStorage.getItem("jwt");
+  useEffect(() => {
+    dispatch(getUserWallet(token));
+    setWalletId(wallet.wallet.id);
+    setWalletAmount(wallet.wallet.balance);
+    dispatch(getWalletTransactions(token));
+    console.log("Wallet Data:", wallet);
+  }, [dispatch, token]);
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!amount) return
-    // dispatch(
-    //   addMoneyRequest({
-    //     amount: Number(amount),
-    //     paymentMethod,
-    //   })
-    // )
+    if (!amount) return;
+    dispatch(
+      paymentHandler(
+        localStorage.getItem("token"),
+        Number(amount),
+        paymentMethod
+      )
+    )
     console.log(amount);
   }
   const handleWithdraw = (e) => {
@@ -74,13 +88,13 @@ export default function Wallet() {
     e.preventDefault()
 
     if (!walletId || !amount) return
-
-    // dispatch(
-    //   transferMoneyRequest({
-    //     walletId,
-    //     amount: Number(amount),
-    //   })
-    // )
+    dispatch(
+      transferMoney(
+        localStorage.getItem("token"),
+        walletId,
+        { amount: Number(amount) }
+      )
+    )
     console.log(amount);
   }
   const handleCopy = async () => {
@@ -121,7 +135,7 @@ export default function Wallet() {
                   Total Balance
                 </div>
                 <div className="text-4xl font-semibold mt-1">
-                  ₹24,500.00
+                  ₹{walletAmount.toLocaleString("en-IN")}
                 </div>
               </div>
 
