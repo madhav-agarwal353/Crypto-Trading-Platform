@@ -39,7 +39,6 @@ import StripeLogo from "@/assets/stripe.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { paymentHandler, transferMoney, getUserWallet, getWalletTransactions } from "../store/Wallet/Action";
 import { useEffect } from "react";
-import { set } from "zod";
 
 
 
@@ -50,7 +49,7 @@ export default function Wallet() {
   const [reloading, setReloading] = useState(false);
   const dispatch = useDispatch()
   const [amount, setAmount] = useState('')
-  const [paymentMethod, setPaymentMethod] = useState("razorpay")
+  const [paymentMethod, setPaymentMethod] = useState("RAZORPAY")
 
   const wallet = useSelector(state => state.wallet);
   const token = localStorage.getItem("jwt");
@@ -60,14 +59,14 @@ export default function Wallet() {
     setWalletAmount(wallet.wallet.balance);
     dispatch(getWalletTransactions(token));
     console.log("Wallet Data:", wallet);
-  }, [dispatch, token]);
+  }, [dispatch, token, reloading]);
 
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!amount) return;
     dispatch(
       paymentHandler(
-        localStorage.getItem("token"),
+        localStorage.getItem("jwt"),
         Number(amount),
         paymentMethod
       )
@@ -135,7 +134,7 @@ export default function Wallet() {
                   Total Balance
                 </div>
                 <div className="text-4xl font-semibold mt-1">
-                  ₹{walletAmount.toLocaleString("en-IN")}
+                  ₹{walletAmount}
                 </div>
               </div>
 
@@ -174,9 +173,9 @@ export default function Wallet() {
                           <input
                             type="radio"
                             name="pay"
-                            value="razorpay"
-                            checked={paymentMethod === "razorpay"}
-                            onChange={() => setPaymentMethod("razorpay")}
+                            value="RAZORPAY"
+                            checked={paymentMethod === "RAZORPAY"}
+                            onChange={() => setPaymentMethod("RAZORPAY")}
                           />
                           <img
                             src={RazorpayLogo}
@@ -189,9 +188,9 @@ export default function Wallet() {
                           <input
                             type="radio"
                             name="pay"
-                            value="stripe"
-                            checked={paymentMethod === "stripe"}
-                            onChange={() => setPaymentMethod("stripe")}
+                            value="STRIPE"
+                            checked={paymentMethod === "STRIPE"}
+                            onChange={() => setPaymentMethod("STRIPE")}
                           />
                           <img
                             src={StripeLogo}

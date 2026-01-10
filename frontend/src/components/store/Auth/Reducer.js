@@ -4,7 +4,7 @@ const initialState = {
     user: null,
     loading: false,
     error: null,
-    jwt: null
+    jwt: localStorage.getItem("jwt") || null
 }
 const authReducer = (state = initialState, action) => {
     switch (action.type) {

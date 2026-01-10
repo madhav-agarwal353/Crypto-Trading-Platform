@@ -60,7 +60,7 @@ export const paymentHandler = (token, amount, paymentMethod) => async (dispatch)
                 Authorization: `Bearer ${token}`
             }
         });
-        window.location.href = response.data.paymentUrl;
+        window.location.href = response.data.payment_url;
         // dispatch({
         //     type: actionTypes.DEPOSIT_WALLET_SUCCESS,
         //     payload: response.data
@@ -73,7 +73,7 @@ export const transferMoney = (token, walletId, reqData) =>
     async (dispatch) => {
         dispatch({ type: actionTypes.TRANSFER_MONEY_REQUEST });
         try {
-            const response = await axios.put(`${baseURL}/api/wallet/transfer/${walletId}`, reqData, {
+            const response = await axios.put(`${baseURL}/api/${walletId}/transfer`, reqData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
