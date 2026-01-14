@@ -10,14 +10,11 @@ import java.math.BigDecimal;
 
 @Data
 public class Wallet {
-
     @Id
     private String id;
 
     @DBRef
+    @JsonIgnore
     private User user;
-
     private BigDecimal balance;
-
-
 }

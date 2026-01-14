@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping("/api/wallets")
+@RequestMapping("/api/wallet")
 public class WalletController {
 
     @Autowired
@@ -44,14 +44,14 @@ public class WalletController {
         }
     }
 
-    @GetMapping("/wallet")
+    @GetMapping("/me")
     public ResponseEntity<?> getUserWallet(@RequestHeader("Authorization") String jwt) {
         User user = userService.findUserByJwtToken(jwt);
         Wallet wallet = walletService.getUserWallet(user);
         return ResponseEntity.ok(wallet);
     }
 
-    @PutMapping("/wallet/{walletId}/transfer")
+    @PutMapping("/{walletId}/transfer")
     public ResponseEntity<?> walletToWalletTransfer(
             @RequestHeader("Authorization") String jwt
             , @PathVariable String walletId
@@ -63,7 +63,7 @@ public class WalletController {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @PutMapping("/wallet/order/{orderId}/pay")
+    @PutMapping("/order/{orderId}/pay")
     public ResponseEntity<?> payOrder(
             @RequestHeader("Authorization") String jwt
             , @PathVariable String orderId) throws Exception {
@@ -73,7 +73,7 @@ public class WalletController {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @PutMapping("/wallet/order/deposit")
+    @PutMapping("/order/deposit")
     public ResponseEntity<?> addMoneyToWallet(
             @RequestHeader("Authorization") String jwt,
             @RequestParam(name = "order_id") String orderId,
