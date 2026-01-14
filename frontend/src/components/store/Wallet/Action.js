@@ -36,10 +36,10 @@ export const getWalletTransactions = (token) => async (dispatch) => {
 export const depositToWallet = (token, orderId, paymentId, navigate) => async (dispatch) => {
     dispatch({ type: actionTypes.DEPOSIT_WALLET_REQUEST });
     try {
-        const response = await axios.put(`${baseURL}/api/wallet/deposit`, null, {
+        const response = await axios.put(`${baseURL}/api/wallet/order/deposit`, null, {
             params: {
-                orderId: orderId,
-                paymentId: paymentId
+                order_id: orderId,
+                payment_id: paymentId
             },
             headers: {
                 Authorization: `Bearer ${token}`

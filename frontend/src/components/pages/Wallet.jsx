@@ -37,10 +37,13 @@ import { Input } from "@/components/ui/input";
 import RazorpayLogo from "@/assets/razorpay.svg";
 import StripeLogo from "@/assets/stripe.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { paymentHandler, transferMoney, getUserWallet, getWalletTransactions } from "../store/Wallet/Action";
+import { paymentHandler, transferMoney, getUserWallet, getWalletTransactions, depositToWallet } from "../store/Wallet/Action";
 import { useEffect } from "react";
-
-
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export default function Wallet() {
   const [walletId, setWalletId] = useState("");
@@ -50,7 +53,7 @@ export default function Wallet() {
   const dispatch = useDispatch()
   const [amount, setAmount] = useState('')
   const [paymentMethod, setPaymentMethod] = useState("RAZORPAY")
-
+  const navigate = useNavigate();
   const wallet = useSelector(state => state.wallet);
   const token = localStorage.getItem("jwt");
   useEffect(() => {
@@ -59,7 +62,26 @@ export default function Wallet() {
     setWalletAmount(wallet.wallet.balance);
     dispatch(getWalletTransactions(token));
     console.log("Wallet Data:", wallet);
-  }, [dispatch, token, reloading]);
+  }, [dispatch, token, reloading ,]);
+
+
+  const query = useQuery();
+  const orderId = query.get("order_id");
+  const paymentId = query.get("payment_id");
+  const razorpay_id = query.get("razorpay_payment_id");
+
+  useEffect(() => {
+    if (!orderId)
+      return;
+    dispatch(
+      depositToWallet(
+        localStorage.getItem("jwt"),
+        orderId,
+        razorpay_id || paymentId,
+        navigate
+      )
+    )
+  }, [orderId, paymentId, razorpay_id]);
 
   const handleSubmit = (e) => {
     e.preventDefault()
