@@ -71,9 +71,10 @@ export const paymentHandler = (token, amount, paymentMethod) => async (dispatch)
 };
 export const transferMoney = (token, walletId, reqData) =>
     async (dispatch) => {
+        console.log(token, walletId, reqData);
         dispatch({ type: actionTypes.TRANSFER_MONEY_REQUEST });
         try {
-            const response = await axios.put(`${baseURL}/api/${walletId}/transfer`, reqData, {
+            const response = await axios.put(`${baseURL}/api/wallet/${walletId}/transfer`, reqData, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

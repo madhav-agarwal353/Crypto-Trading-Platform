@@ -52,6 +52,7 @@ export default function Wallet() {
   const [reloading, setReloading] = useState(false);
   const dispatch = useDispatch()
   const [amount, setAmount] = useState('')
+  const [transferWalletId, setTransferWalletId] = useState()
   const [paymentMethod, setPaymentMethod] = useState("RAZORPAY")
   const navigate = useNavigate();
   const wallet = useSelector(state => state.wallet);
@@ -62,7 +63,7 @@ export default function Wallet() {
     setWalletAmount(wallet.wallet.balance);
     dispatch(getWalletTransactions(token));
     console.log("Wallet Data:", wallet);
-  }, [dispatch, token, reloading ,]);
+  }, [dispatch, token, reloading,]);
 
 
   const query = useQuery();
@@ -108,15 +109,16 @@ export default function Wallet() {
   const handleTransfer = (e) => {
     e.preventDefault()
 
-    if (!walletId || !amount) return
+    if (!transferWalletId || !amount) return
     dispatch(
       transferMoney(
-        localStorage.getItem("token"),
-        walletId,
-        { amount: Number(amount) }
-      )
+        localStorage.getItem("jwt"),
+        transferWalletId,
+        {
+          amount: Number(amount),
+          purpose: " money transfer",
+        })
     )
-    console.log(amount);
   }
   const handleCopy = async () => {
     await navigator.clipboard.writeText(walletId);
@@ -292,8 +294,7 @@ export default function Wallet() {
                     <form onSubmit={handleTransfer} className="space-y-3">
                       <Input
                         placeholder="Recipient Wallet ID"
-                        value={walletId}
-                        onChange={(e) => setWalletId(e.target.value)}
+                        onChange={(e) => setTransferWalletId(e.target.value)}
                       />
 
                       <Input

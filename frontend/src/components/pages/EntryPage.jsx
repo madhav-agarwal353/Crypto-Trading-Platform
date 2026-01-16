@@ -49,20 +49,6 @@ export default function FinoraAuth({ name }) {
       // dispatch(verifyOtp(values))
     }
   }
-
-  useEffect(() => {
-    if (mode === "login") {
-      navigate("/login")
-    }
-
-    if (mode === "signup") {
-      navigate("/signup")
-    }
-    if (mode === "forgot") {
-      navigate("/forgot-password")
-    }
-  }, [user, mode, navigate])
-
   const videoUrls = [
     "https://cdn.pixabay.com/video/2022/03/31/112471-694704574_large.mp4",
     "https://cdn.pixabay.com/video/2024/07/15/221356_large.mp4",

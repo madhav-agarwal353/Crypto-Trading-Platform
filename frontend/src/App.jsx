@@ -22,9 +22,7 @@ import ForgotPassword from "@/components/lib/ForgotPassword";
 
 import { getUserData } from "@/components/store/Auth/Action";
 
-/* =========================
-   Protected Route Wrapper
-========================= */
+
 const ProtectedRoute = ({ auth }) => {
   if (!auth.jwt) {
     return <Navigate to="/login" replace />;
@@ -45,9 +43,6 @@ function App() {
 
   const auth = useSelector((state) => state.auth);
 
-  /* =========================
-     Fetch User on App Load
-  ========================= */
   useEffect(() => {
     if (auth.jwt && !auth.user) {
       dispatch(getUserData({ jwt: auth.jwt }));
