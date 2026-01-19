@@ -2,6 +2,8 @@ import { useState } from "react";
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
+  ArrowDownLeft,
+  ArrowUpRight,
   Send,
   Wallet as WalletIcon,
   Building2,
@@ -57,15 +59,19 @@ export default function Wallet() {
   const navigate = useNavigate();
   const wallet = useSelector(state => state.wallet);
   const token = localStorage.getItem("jwt");
+  const [transactions, setTransactions] = useState([]);
   useEffect(() => {
     dispatch(getUserWallet(token));
-    setWalletId(wallet.wallet.id);
-    setWalletAmount(wallet.wallet.balance);
     dispatch(getWalletTransactions(token));
-    console.log("Wallet Data:", wallet);
-  }, [dispatch, token, reloading,]);
+  }, [dispatch, token, reloading]);
 
-
+  useEffect(() => {
+    if (wallet?.wallet) {
+      setWalletId(wallet.wallet.id);
+      setWalletAmount(wallet.wallet.balance);
+      setTransactions(wallet.transactions);
+    }
+  }, [wallet]);
   const query = useQuery();
   const orderId = query.get("order_id");
   const paymentId = query.get("payment_id");
@@ -132,12 +138,12 @@ export default function Wallet() {
   };
 
   /* ------------------ MOCK DATA ------------------ */
-  const transactions = [
-    { id: 1, type: "Add Money", amount: "+₹5,000", date: "2025-01-12" },
-    { id: 2, type: "Transfer", amount: "-₹1,200", date: "2025-01-11" },
-    { id: 3, type: "Withdraw", amount: "-₹800", date: "2025-01-10" },
-    { id: 4, type: "Add Money", amount: "+₹2,000", date: "2025-01-09" },
-  ];
+  // const transactions = [
+  //   { id: 1, type: "Add Money", amount: "+₹5,000", date: "2025-01-12" },
+  //   { id: 2, type: "Transfer", amount: "-₹1,200", date: "2025-01-11" },
+  //   { id: 3, type: "Withdraw", amount: "-₹800", date: "2025-01-10" },
+  //   { id: 4, type: "Add Money", amount: "+₹2,000", date: "2025-01-09" },
+  // ];
 
   /* ------------------ UI ------------------ */
   return (
@@ -310,8 +316,9 @@ export default function Wallet() {
                             Cancel
                           </Button>
                         </DialogClose>
-
-                        <Button type="submit">Send</Button>
+                        <DialogClose asChild>
+                          <Button type="submit">Send</Button>
+                        </DialogClose>
                       </DialogFooter>
                     </form>
                   </DialogContent>
@@ -345,10 +352,12 @@ export default function Wallet() {
         {/* ================= TRANSACTIONS ================= */}
         <Card className="border border-white/10 bg-white/5 backdrop-blur-xl">
           <CardContent className="p-6">
-            <div className="flex justify-between mb-4">
+            <div className="flex justify-between items-center mb-4">
               <h2 className="font-semibold">Transaction History</h2>
               <button onClick={handleReload}>
-                <RotateCw className={`h-4 w-4 ${reloading && "animate-spin"}`} />
+                <RotateCw
+                  className={`h-4 w-4 ${reloading ? "animate-spin" : ""}`}
+                />
               </button>
             </div>
 
@@ -362,38 +371,91 @@ export default function Wallet() {
               </TableHeader>
 
               <TableBody>
-                {transactions.map(tx => {
-                  const isCredit = tx.amount.startsWith("+");
-                  const Icon =
-                    tx.type === "Add Money"
-                      ? Coins
-                      : tx.type === "Withdraw"
-                        ? ArrowUpFromLine
-                        : Send;
+                {transactions && transactions.length > 0 ? (
+                  [...transactions]
+                    .sort(
+                      (a, b) =>
+                        new Date(b.createdAt) - new Date(a.createdAt)
+                    )
+                    .map((tx) => {
+                      const isCredit = tx.amount > 0;
 
-                  return (
-                    <TableRow key={tx.id}>
-                      <TableCell>
-                        <div className="flex gap-3 items-center">
-                          <div
-                            className={`h-9 w-9 rounded-xl flex items-center justify-center
-                            ${isCredit ? "bg-emerald-400/20 text-emerald-400" : "bg-red-400/20 text-red-400"}`}
+                      const typeMap = {
+                        ADD_MONEY: {
+                          label: "Add Money",
+                          icon: Coins,
+                        },
+                        WITHDRAWAL: {
+                          label: "Withdrawal",
+                          icon: ArrowUpFromLine,
+                        },
+                        WALLET_TRANSFER: {
+                          label: "Wallet Transfer",
+                          icon: Send,
+                        },
+                        BUY_ASSET: {
+                          label: "Buy Asset",
+                          icon: ArrowDownLeft,
+                        },
+                        SELL_ASSET: {
+                          label: "Sell Asset",
+                          icon: ArrowUpRight,
+                        },
+                      };
+
+                      const {
+                        label,
+                        icon: Icon,
+                      } = typeMap[tx.type] || {
+                        label: tx.type,
+                        icon: Send,
+                      };
+
+                      return (
+                        <TableRow key={tx.id}>
+                          <TableCell>
+                            <div className="flex gap-3 items-center">
+                              <div
+                                className={`h-9 w-9 rounded-xl flex items-center justify-center
+                        ${isCredit
+                                    ? "bg-emerald-400/20 text-emerald-400"
+                                    : "bg-red-400/20 text-red-400"
+                                  }`}
+                              >
+                                <Icon className="h-4 w-4" />
+                              </div>
+                              <span className="font-medium">{label}</span>
+                            </div>
+                          </TableCell>
+
+                          <TableCell>
+                            {new Date(tx.createdAt).toLocaleString()}
+                          </TableCell>
+
+                          <TableCell
+                            className={`text-right font-semibold ${isCredit
+                              ? "text-primary"
+                              : "text-destructive"
+                              }`}
                           >
-                            <Icon className="h-4 w-4" />
-                          </div>
-                          {tx.type}
-                        </div>
-                      </TableCell>
-                      <TableCell>{tx.date}</TableCell>
-                      <TableCell className={`text-right font-semibold ${isCredit ? "text-primary" : "text-destructive"}`}>
-                        {tx.amount}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                            {isCredit ? "+" : "-"}₹
+                            {Math.abs(tx.amount)}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={3}
+                      className="text-center py-6 opacity-60"
+                    >
+                      No transactions found
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
-
           </CardContent>
         </Card>
 

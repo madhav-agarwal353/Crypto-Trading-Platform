@@ -17,20 +17,20 @@ export const getUserWallet = (token) => async (dispatch) => {
 };
 
 export const getWalletTransactions = (token) => async (dispatch) => {
-    async (dispatch) => {
-        dispatch({ type: actionTypes.GET_WALLET_TRANSACTIONS_REQUEST });
-        try {
-            const response = await axios.get(`${baseURL}/api/wallet/transactions`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            dispatch({ type: actionTypes.GET_WALLET_TRANSACTIONS_SUCCESS, payload: response.data });
-        }
-        catch (error) {
-            dispatch({ type: actionTypes.GET_WALLET_TRANSACTIONS_FAILURE, payload: error.message });
-        }
-    };
+    dispatch({ type: actionTypes.GET_WALLET_TRANSACTIONS_REQUEST });
+    try {
+        const response = await axios.get(`${baseURL}/api/wallet/transaction`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        dispatch({ type: actionTypes.GET_WALLET_TRANSACTIONS_SUCCESS, payload: response.data });
+        console.log("Transaction read : ", response.data);
+    }
+    catch (error) {
+        console.log("Error in reading transactions: ", error);
+        dispatch({ type: actionTypes.GET_WALLET_TRANSACTIONS_FAILURE, payload: error.message });
+    }
 };
 
 export const depositToWallet = (token, orderId, paymentId, navigate) => async (dispatch) => {
