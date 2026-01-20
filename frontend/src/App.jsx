@@ -49,10 +49,15 @@ function App() {
     }
   }, [auth.jwt, auth.user, dispatch]);
 
-  /* =========================
-     Prevent Logged-in User
-     From Visiting Auth Pages
-  ========================= */
+  // useEffect(() => {
+  //   const disableRightClick = (e) => e.preventDefault();
+  //   document.addEventListener("contextmenu", disableRightClick);
+
+  //   return () => {
+  //     document.removeEventListener("contextmenu", disableRightClick);
+  //   };
+  // }, []);
+
   useEffect(() => {
     if (
       auth.jwt &&

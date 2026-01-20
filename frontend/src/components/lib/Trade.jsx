@@ -9,18 +9,33 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getUserWallet } from '../store/Wallet/Action'
+import { payOrder } from "../store/Order/Action";
 export default function TradeButton({
-    stockName = "AAPL",
-    stockPrice = 120,
-    walletBalance = 5000,
-    ownedQuantity = 10,
+    stockName,
+    stockPrice,
+    ownedQuantity = 40,
 }) {
+    const dispatch = useDispatch();
+    const wallet = useSelector(state => state.wallet);
+    const [walletBalance, setWallletBalance] = useState('');
     const [open, setOpen] = useState(false);
     const [tradeType, setTradeType] = useState("buy");
     const [quantity, setQuantity] = useState(1);
 
-    const maxBuyQuantity = Math.floor(walletBalance / stockPrice);
+    useEffect(() => {
+        if (walletBalance === null || walletBalance === undefined) {
+            dispatch(getUserWallet(localStorage.getItem('jwt')));
+        }
+    }, [dispatch, walletBalance]);
+
+    useEffect(() => {
+        setWallletBalance(wallet.wallet.balance);
+    }, [wallet])
+
+    const maxBuyQuantity = Math.floor(walletBalance / (stockPrice * 90));
     const maxSellQuantity = ownedQuantity;
 
     const maxQuantity = tradeType === "buy" ? maxBuyQuantity : maxSellQuantity;
@@ -32,14 +47,13 @@ export default function TradeButton({
     };
 
     const handleTrade = () => {
-        console.log({
-            tradeType,
-            stockName,
-            quantity,
-            price: stockPrice,
-            totalAmount: amount,
-        });
-        setOpen(false);
+        dispatch(payOrder({
+            jwt: localStorage.getItem('jwt'),
+            amount,
+            orderData: {
+               
+            }
+        }))
     };
 
     return (
@@ -93,14 +107,14 @@ export default function TradeButton({
                     <div className="mt-4">
                         <Slider
                             value={[quantity]}
-                            min={1}
-                            max={maxQuantity || 1}
+                            min={0}
+                            max={maxQuantity || 0}
                             step={1}
                             onValueChange={(value) => setQuantity(value[0])}
                         />
                         <div className="flex justify-between text-xs mt-1">
-                            <span>1</span>
-                            <span>{maxQuantity || 1}</span>
+                            <span>0</span>
+                            <span>{maxQuantity || 0}</span>
                         </div>
                     </div>
 

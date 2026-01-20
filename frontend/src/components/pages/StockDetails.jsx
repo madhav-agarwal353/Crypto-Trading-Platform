@@ -21,6 +21,26 @@ const timeSeries = [
   { label: "1 Year", value: 365 },
 ];
 
+const StatCard = ({ label, value }) => {
+  return (
+    <div className="rounded-xl border p-4 bg-background">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <p className="text-lg font-semibold mt-1">{value}</p>
+    </div>
+  );
+};
+
+const InfoRow = ({ label, value }) => {
+  return (
+    <div className="flex items-center justify-between rounded-lg border p-3">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-sm font-medium text-right">
+        {value || "-"}
+      </span>
+    </div>
+  );
+};
+
 const Chart = () => {
   const [activeLabel, setActiveLabel] = useState("1 Day");
   const dispatch = useDispatch();
@@ -162,7 +182,15 @@ const Chart = () => {
           </div>
         </div>
 
-        <Trade />
+        {coinDetails && (
+          <Trade
+            stockName={coinDetails.name}
+            stockPrice={coinDetails.market_data.current_price.usd}
+          // ownedQuantity={ownedQuantity}
+          />
+        )}
+
+
       </div>
 
       {/* TIME BUTTONS */}
@@ -188,6 +216,68 @@ const Chart = () => {
           height="100%"
         />
       </div>
+      {/* ================= COIN DETAILS ================= */}
+      <div className="px-7 mt-12 space-y-10">
+
+        {/* ===== KEY STATS ===== */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Market Statistics</h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <StatCard
+              label="Market Cap"
+              value={`$${coinDetails.market_data.market_cap.usd.toLocaleString()}`}
+            />
+            <StatCard
+              label="24h Volume"
+              value={`$${coinDetails.market_data.total_volume.usd.toLocaleString()}`}
+            />
+            <StatCard
+              label="Circulating Supply"
+              value={coinDetails.market_data.circulating_supply.toLocaleString()}
+            />
+            <StatCard
+              label="Max Supply"
+              value={
+                coinDetails.market_data.max_supply
+                  ? coinDetails.market_data.max_supply.toLocaleString()
+                  : "∞"
+              }
+            />
+            <StatCard
+              label="All Time High"
+              value={`$${coinDetails.market_data.ath.usd.toLocaleString()}`}
+            />
+            <StatCard
+              label="All Time Low"
+              value={`$${coinDetails.market_data.atl.usd.toLocaleString()}`}
+            />
+          </div>
+        </div>
+
+        {/* ===== ABOUT ===== */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">About {coinDetails.name}</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            {coinDetails.description.en || "No description available."}
+          </p>
+        </div>
+
+        {/* ===== ADDITIONAL INFO ===== */}
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Additional Information</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <InfoRow label="Genesis Date" value={coinDetails.genesis_date} />
+            <InfoRow label="Hashing Algorithm" value={coinDetails.hashing_algorithm} />
+            <InfoRow
+              label="Categories"
+              value={coinDetails.categories?.join(", ")}
+            />
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 };
