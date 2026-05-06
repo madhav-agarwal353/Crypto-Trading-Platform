@@ -1,29 +1,92 @@
 # 🪙 Finora – Modern Crypto Trading Platform
 
-**Finora** is a secure cryptocurrency trading platform. It allows users to **track, trade, and manage digital assets** in real-time with full wallet support, live trading, and secure withdrawals.
+**Finora** is a secure cryptocurrency trading platform that allows users to **track, trade, and manage digital assets** in real-time with wallet support, live trading, and secure transactions.
 
 ---
 
-## 🔥 Features
 
-- **Live Price Tracking** – Real-time updates for hundreds of cryptocurrencies.  
-- **Interactive Charts** – Area and line charts powered by ApexCharts for trend analysis.  
-- **Portfolio & Wallet Management** – Store, track, and manage cryptocurrency holdings securely.  
-- **Live Trading** – Buy and sell cryptocurrencies instantly.  
-- **Deposit & Withdrawal** – Securely deposit funds and withdraw profits anytime.  
-- **Custom Time Frames** – Switch between 1 Day, 1 Week, 1 Month, or 1 Year charts.  
-- **Search & Filter** – Quickly locate coins or trading pairs.  
-- **Modern & Secure UI** – Clean design using Shadcn UI with best practices for data security.  
-- **Spring Boot Backend** – Handles authentication, wallet transactions, and trade execution securely.  
+## 📸 Screenshots
+
+### 🏠 Home / Dashboard
+<p align="center">
+  <img src="./assets/home1.png" width="800"/>
+</p>
+
+---
+
+### 💹 Trading Page
+<p align="center">
+  <img src="./assets/trade.png" width="800"/>
+</p>
+
+---
+
+### 📋 Sidebar Navigation
+<p align="center">
+  <img src="./assets/sidebar.png" width="300"/>
+</p>
+
+---
+
+### 🏦 Bank / Payment Details
+<p align="center">
+  <img src="./assets/bank.png" width="600"/>
+</p>
+
+---
+
+### 🔄 Transfer Funds
+<p align="center">
+  <img src="./assets/transfer.png" width="600"/>
+</p>
+
+---
+## 🚀 Features
+
+- 📊 Live crypto price tracking  
+- 📈 Interactive charts (ApexCharts)  
+- 💼 Portfolio & wallet management  
+- ⚡ Instant buy/sell trading  
+- 💳 Deposit & withdrawal system  
+- 🔍 Search and filter coins  
+- 🎨 Modern UI (Shadcn + Tailwind)  
+- 🔐 Secure backend (Spring Boot + JWT)  
+
+---
+
+## ⚙️ Architecture & Messaging
+
+### 🔄 Apache Kafka (Event Streaming)
+
+Kafka is used to **decouple services** and handle asynchronous operations:
+
+- 💳 Payment processing decoupling  
+- 🔄 Transaction updates via events  
+- 📧 Email notification service (alerts, confirmations)  
+
+---
+
+### ⚡ Redis (Caching & Performance)
+
+Redis is used for **fast data access and caching**:
+
+- 🏦 Bank account details caching  
+- 💰 Transaction amount handling  
+- 👤 User data caching  
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React, JavaScript, TailwindCSS, Shadcn UI  
-- **Charts & Graphs**: ApexCharts  
-- **Backend**: Spring Boot (Java), Spring Security, JWT Authentication, REST APIs  
-- **Database**: PostgreSQL / MySQL (for wallets, trades, and user data)  
-- **Data Fetching**: REST APIs (CoinGecko, Alpha Vantage)    
+**Frontend:** React, JavaScript, TailwindCSS, Shadcn UI  
+**Backend:** Spring Boot, Spring Security, JWT  
+**Database:** PostgreSQL / MySQL  
+**Messaging:** Apache Kafka  
+**Caching:** Redis  
+**Charts:** ApexCharts  
+**APIs:** CoinGecko, Alpha Vantage  
 
 ---
+
+
+
