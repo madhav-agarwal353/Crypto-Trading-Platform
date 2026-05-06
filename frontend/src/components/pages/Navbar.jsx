@@ -17,7 +17,10 @@ import {
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
+    const navigate = useNavigate();
+
     const auth = useSelector(state => state.auth);
     const name = (auth.user).name;
     return (
@@ -54,17 +57,20 @@ const Navbar = () => {
                 <span className='text-sm lg:text-base cursor-pointer'>
                     FINORA
                 </span>
-                <div className="flex w-full max-w-sm items-center gap-2">
+                {/* <div className="flex w-full max-w-sm items-center gap-2">
                     <Input type="text" placeholder="Search" />
                     <Button type="submit" variant="outline">
                         Search
                     </Button>
-                </div>
+                </div> */}
             </div>
-            <Avatar>
-                {/* <AvatarImage></AvatarImage> */}
+            <Avatar
+                className="cursor-pointer"
+                onClick={() => navigate("/profile")}
+            >
                 <AvatarFallback>
-                    {name.charAt(0).toUpperCase() + name.split(" ")[1].charAt(0).toUpperCase()}
+                    {name.charAt(0).toUpperCase() +
+                        name.split(" ")[1]?.charAt(0).toUpperCase()}
                 </AvatarFallback>
             </Avatar>
         </div>

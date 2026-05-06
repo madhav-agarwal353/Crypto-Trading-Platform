@@ -22,13 +22,14 @@ public class AssetController {
         return ResponseEntity.ok(assetService.getAssetById(assetId));
     }
 
-    @GetMapping("/coin/{coinId}/user")
+    @GetMapping("/coin/user/{coinId}")
     public ResponseEntity<?> getAssetByUseIdAndCoinId(
             @RequestHeader("Authorization") String token,
             @PathVariable String coinId
     ) throws Exception {
         User user = userService.findUserByJwtToken(token);
         Asset asset = assetService.getAssetByUserAndCoin(user.getId(), coinId);
+        System.out.println(asset);
         return ResponseEntity.ok(asset);
     }
 

@@ -3,13 +3,19 @@ package com.stockmarket.predictor.Service;
 import com.stockmarket.predictor.Entity.User;
 import com.stockmarket.predictor.Model.Order;
 import com.stockmarket.predictor.Model.Wallet;
+import com.stockmarket.predictor.Model.WalletTransaction;
 import com.stockmarket.predictor.Respository.WalletRespository;
+import com.stockmarket.predictor.Respository.WalletTransactionRespository;
 import com.stockmarket.predictor.domain.ORDER_TYPE;
+import com.stockmarket.predictor.domain.WalletTransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +23,8 @@ public class WalletServiceImpl implements WalletService {
 
     @Autowired
     WalletRespository walletRespository;
-
+    @Autowired
+    WalletTransactionRespository walletTransactionRespository;
     @Override
     public Wallet getUserWallet(User user) {
         Wallet wallet = walletRespository.findByUserId(user.getId());
@@ -35,8 +42,16 @@ public class WalletServiceImpl implements WalletService {
     public void addBalance(Wallet wallet, double amount) {
         BigDecimal currentBalance = wallet.getBalance();
         BigDecimal newBalance = currentBalance.add(BigDecimal.valueOf(amount));
+        String id = wallet.getUser().getId();
+        WalletTransaction walletTransaction = new WalletTransaction();
+        walletTransaction.setAmount(BigDecimal.valueOf(amount));
+        walletTransaction.setCreatedAt(Instant.now());
+        walletTransaction.setType(WalletTransactionType.ADD_MONEY);
+        walletTransaction.setUserId(id);
+        walletTransactionRespository.save(walletTransaction);
         wallet.setBalance(newBalance);
         walletRespository.save(wallet);
+
     }
 
     @Override
@@ -51,11 +66,31 @@ public class WalletServiceImpl implements WalletService {
     @Override
     @Transactional
     public void transferFunds(Wallet fromWallet, Wallet toWallet, BigDecimal amount) throws Exception {
+        if(fromWallet.getId().equals(toWallet.getId())){
+            throw new Exception("Cannot transfer funds to the same wallet.");
+        }
         if (fromWallet.getBalance().compareTo(amount) < 0) {
             throw new Exception("Insufficient funds in the source wallet.");
         }
         fromWallet.setBalance(fromWallet.getBalance().subtract(amount));
         toWallet.setBalance(toWallet.getBalance().add(amount));
+        //----------------------------------------------
+        String idFrom = fromWallet.getUser().getId();
+        WalletTransaction walletTransactionfrom = new WalletTransaction();
+        walletTransactionfrom.setAmount(amount.multiply(BigDecimal.valueOf(-1)));
+        walletTransactionfrom.setCreatedAt(Instant.now());
+        walletTransactionfrom.setType(WalletTransactionType.WALLET_TRANSFER);
+        walletTransactionfrom.setUserId(idFrom);
+        walletTransactionRespository.save(walletTransactionfrom);
+        //-----------------------------------------------
+        String idTo = toWallet.getUser().getId();
+        WalletTransaction walletTransactionto = new WalletTransaction();
+        walletTransactionto.setAmount(amount.multiply(BigDecimal.valueOf(1)));
+        walletTransactionto.setCreatedAt(Instant.now());
+        walletTransactionto.setType(WalletTransactionType.WALLET_TRANSFER);
+        walletTransactionto.setUserId(idTo);
+        walletTransactionRespository.save(walletTransactionto);
+        //-------------------------------------------------
         walletRespository.save(fromWallet);
         walletRespository.save(toWallet);
     }
@@ -75,4 +110,10 @@ public class WalletServiceImpl implements WalletService {
         }
         return walletRespository.save(wallet);
     }
+    @Override
+    public List<WalletTransaction> getWalletTransactions(String userId) {
+        return walletTransactionRespository.findByUserIdOrderByCreatedAtDesc(userId);
+    }
+
+
 }

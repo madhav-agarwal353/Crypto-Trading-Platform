@@ -16,7 +16,7 @@ import { payOrder } from "../store/Order/Action";
 export default function TradeButton({
     stockName,
     stockPrice,
-    ownedQuantity = 40,
+    ownedQuantity,
 }) {
     const dispatch = useDispatch();
     const wallet = useSelector(state => state.wallet);
@@ -24,7 +24,6 @@ export default function TradeButton({
     const [open, setOpen] = useState(false);
     const [tradeType, setTradeType] = useState("buy");
     const [quantity, setQuantity] = useState(1);
-
     useEffect(() => {
         if (walletBalance === null || walletBalance === undefined) {
             dispatch(getUserWallet(localStorage.getItem('jwt')));
@@ -47,11 +46,16 @@ export default function TradeButton({
     };
 
     const handleTrade = () => {
+        console.log(stockName,
+            quantity,
+            tradeType)
         dispatch(payOrder({
             jwt: localStorage.getItem('jwt'),
-            amount,
+            amount: Number(amount),
             orderData: {
-               
+                coinId: stockName,
+                quantity: quantity, 
+                orderType: tradeType.toUpperCase()
             }
         }))
     };
@@ -107,14 +111,14 @@ export default function TradeButton({
                     <div className="mt-4">
                         <Slider
                             value={[quantity]}
-                            min={0}
-                            max={maxQuantity || 0}
+                            min={1}
+                            max={maxQuantity || 1}
                             step={1}
                             onValueChange={(value) => setQuantity(value[0])}
                         />
                         <div className="flex justify-between text-xs mt-1">
-                            <span>0</span>
-                            <span>{maxQuantity || 0}</span>
+                            <span>1</span>
+                            <span>{maxQuantity || 1}</span>
                         </div>
                     </div>
 

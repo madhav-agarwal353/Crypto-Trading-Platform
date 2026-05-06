@@ -18,6 +18,11 @@ public interface OrderService {
 
     Order processOrder(Coin coin, BigDecimal quantity, ORDER_TYPE ORDER_TYPE, User user);
 
+    Order buyAsset(Coin coin,
+                           BigDecimal quantity,
+                           User user) throws Exception;
 
-
+    Order sellAsset(Coin coin,
+                            BigDecimal quantity,
+                            User user) throws Exception;
 }

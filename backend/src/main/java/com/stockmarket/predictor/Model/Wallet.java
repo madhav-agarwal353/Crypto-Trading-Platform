@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 public class Wallet {
     @Id
     private String id;
-
     @DBRef
     @JsonIgnore
     private User user;

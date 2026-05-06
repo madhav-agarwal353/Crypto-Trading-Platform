@@ -13,6 +13,7 @@ import {
   fetchCoinDetailsById,
   fetchMarketChartData,
 } from "../store/Coin/Action";
+import { getAssetDetails } from "../store/Asset/Action";
 
 const timeSeries = [
   { label: "1 Day", value: 1 },
@@ -49,6 +50,7 @@ const Chart = () => {
   const { coinDetails, marketChart, loading } = useSelector(
     (state) => state.coin
   );
+  const asset = useSelector((state) => state.asset);
 
   const selectedRange = useMemo(
     () => timeSeries.find((t) => t.label === activeLabel)?.value,
@@ -67,6 +69,10 @@ const Chart = () => {
     dispatch(fetchMarketChartData(id, selectedRange));
   }, [dispatch, id, selectedRange]);
 
+  useEffect(() => {
+    dispatch(getAssetDetails(id, localStorage.getItem('jwt')));
+    console.log("asset", asset.assetDetails);
+  }, [id, marketChart])
   /* ================= CHART SERIES ================= */
 
   const series = useMemo(
@@ -184,9 +190,9 @@ const Chart = () => {
 
         {coinDetails && (
           <Trade
-            stockName={coinDetails.name}
+            stockName={coinDetails.id}
             stockPrice={coinDetails.market_data.current_price.usd}
-          // ownedQuantity={ownedQuantity}
+            ownedQuantity={(asset.assetDetails).quantity}
           />
         )}
 

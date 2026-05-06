@@ -26,13 +26,14 @@ export const getAssetDetails =
         dispatch({ type: types.GET_ASSET_DETAILS_REQUEST });
         try {
             const response = await axios.get(
-                `${baseURL}/api/assets/coin/${coinId}/user`, {
+                `${baseURL}/api/assets/coin/user/${coinId}`, {
                 headers: {
                     Authorization: `Bearer ${jwt}`,
                 },
             }
             );
             dispatch({ type: types.GET_ASSET_DETAILS_SUCCESS, payload: response.data });
+            console.log("asset", response.data)
         } catch (error) {
             dispatch({ type: types.GET_ASSET_DETAILS_FAILURE, payload: error.message });
         }

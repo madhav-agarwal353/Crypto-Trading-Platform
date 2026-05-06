@@ -32,7 +32,8 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public Asset getAssetByUserAndCoin(String userId, String coinSymbol) throws Exception {
-        return null;
+        return assetRespository
+                .findByUserIdAndCoinId(userId, coinSymbol);
     }
 
     @Override

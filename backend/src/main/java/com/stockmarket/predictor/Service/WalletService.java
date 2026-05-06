@@ -3,8 +3,10 @@ package com.stockmarket.predictor.Service;
 import com.stockmarket.predictor.Entity.User;
 import com.stockmarket.predictor.Model.Order;
 import com.stockmarket.predictor.Model.Wallet;
+import com.stockmarket.predictor.Model.WalletTransaction;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface WalletService {
 
@@ -17,4 +19,6 @@ public interface WalletService {
     void transferFunds(Wallet fromWallet, Wallet toWallet, BigDecimal amount) throws Exception;
 
     Wallet payOrder(Order order , User user) throws Exception;
+
+    List<WalletTransaction> getWalletTransactions(String userId);
 }

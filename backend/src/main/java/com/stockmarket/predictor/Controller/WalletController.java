@@ -88,4 +88,12 @@ public class WalletController {
         }
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
+    @GetMapping("/transaction")
+    public ResponseEntity<?> transaction( @RequestHeader("Authorization") String jwt) {
+        User user = userService.findUserByJwtToken(jwt);
+        System.out.println("transaction call user id:"+user.getId());
+        return walletService.getWalletTransactions(user.getId()) != null ?
+                ResponseEntity.ok(walletService.getWalletTransactions(user.getId())) :
+                ResponseEntity.notFound().build();
+    }
 }

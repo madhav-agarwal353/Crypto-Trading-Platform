@@ -1,19 +1,19 @@
 package com.stockmarket.predictor.Service;
 
 import com.stockmarket.predictor.Entity.User;
-import com.stockmarket.predictor.Model.Asset;
-import com.stockmarket.predictor.Model.Coin;
-import com.stockmarket.predictor.Model.Order;
-import com.stockmarket.predictor.Model.OrderItem;
+import com.stockmarket.predictor.Model.*;
 import com.stockmarket.predictor.Respository.OrderItemRespository;
 import com.stockmarket.predictor.Respository.OrderRespository;
+import com.stockmarket.predictor.Respository.WalletTransactionRespository;
 import com.stockmarket.predictor.domain.ORDER_STATUS;
 import com.stockmarket.predictor.domain.ORDER_TYPE;
+import com.stockmarket.predictor.domain.WalletTransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +31,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private AssetService assetService;
+
+    @Autowired
+    private WalletTransactionRespository walletTransactionRespository;
 
     @Override
     public Order createOrder(User user, OrderItem orderItem, ORDER_TYPE ORDER_TYPE) {
@@ -71,7 +74,9 @@ public class OrderServiceImpl implements OrderService {
         return orderItemRespository.save(orderItem);
     }
 
-    private Order buyAsset(Coin coin,
+
+    @Override
+    public  Order buyAsset(Coin coin,
                            BigDecimal quantity,
                            User user) throws Exception {
         double buyPrice = coin.getCurrentPrice().doubleValue();
@@ -88,10 +93,18 @@ public class OrderServiceImpl implements OrderService {
         } else {
             assetService.createAsset(user, coin, quantity.doubleValue());
         }
+        //--------------------------------------------
+        String id = user.getId();
+        WalletTransaction walletTransactionfrom = new WalletTransaction();
+        walletTransactionfrom.setAmount(quantity.multiply(BigDecimal.valueOf(-1 * buyPrice)));
+        walletTransactionfrom.setCreatedAt(Instant.now());
+        walletTransactionfrom.setType(WalletTransactionType.BUY_ASSET);
+        walletTransactionfrom.setUserId(id);
+        walletTransactionRespository.save(walletTransactionfrom);
         return savedOrder;
     }
 
-    private Order sellAsset(Coin coin,
+    public Order sellAsset(Coin coin,
                             BigDecimal quantity,
                             User user) throws Exception {
         double sellPrice = coin.getCurrentPrice().doubleValue();
@@ -109,9 +122,16 @@ public class OrderServiceImpl implements OrderService {
             Order savedOrder = orderRespository.save(order);
             walletService.payOrder(order, user);
             Asset updatedAsset = assetService.updateAsset(assetToSell.getId(), quantity.multiply(BigDecimal.valueOf(-1)).doubleValue());
-            if (updatedAsset.getQuantity() * coin.getCurrentPrice().doubleValue() <= 1) {
+            if (updatedAsset.getQuantity() * coin.getCurrentPrice().doubleValue() < 1) {
                 assetService.deleteAsset(updatedAsset.getId());
             }
+            String idFrom = user.getId();
+            WalletTransaction walletTransactionfrom = new WalletTransaction();
+            walletTransactionfrom.setAmount(quantity.multiply(BigDecimal.valueOf(1)));
+            walletTransactionfrom.setCreatedAt(Instant.now());
+            walletTransactionfrom.setType(WalletTransactionType.SELL_ASSET);
+            walletTransactionfrom.setUserId(idFrom);
+            walletTransactionRespository.save(walletTransactionfrom);
             return savedOrder;
         }
         throw new Exception("Insufficient asset quantity to sell");

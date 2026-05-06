@@ -30,6 +30,7 @@ public class OrderController {
     public ResponseEntity<Order> payOrder(
             @RequestHeader("Authorization") String token,
             @RequestBody CreateOrderRequest req) throws Exception {
+        System.out.println(req + " " + token);
         User user = userService.findUserByJwtToken(token);
         Coin coin = coinService.findById(req.getCoinId());
         Order order = orderService.processOrder(
@@ -70,5 +71,4 @@ public class OrderController {
                 )
         );
     }
-
 }

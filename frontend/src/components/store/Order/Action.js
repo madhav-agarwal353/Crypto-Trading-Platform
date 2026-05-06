@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as types from './ActionTypes'
-const baseUrl = 'https://localhost:8080'
+const baseUrl = 'http://localhost:8080'
 export const payOrder = ({ jwt, orderData, amount }) => async (dispatch) => {
 
     dispatch({ type: types.PAY_ORDER_REQUEST });
@@ -15,8 +15,10 @@ export const payOrder = ({ jwt, orderData, amount }) => async (dispatch) => {
             payload: response.data,
             amount
         });
+        console.log(response)
     }
     catch (error) {
+        console.log(error)
         dispatch({
             type: types.PAY_ORDER_FAILURE,
             error: error.message,
